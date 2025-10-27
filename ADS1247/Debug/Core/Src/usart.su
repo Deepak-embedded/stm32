@@ -1,0 +1,7 @@
+../Core/Src/usart.c:31:6:MX_USART2_UART_Init	8	static
+../Core/Src/usart.c:59:6:HAL_UART_MspInit	48	static
+../Core/Src/usart.c:92:6:HAL_UART_MspDeInit	16	static
+../Core/Src/usart.c:119:6:HAL_UART_RxCpltCallback	16	static
+../Core/Src/usart.c:122:19:STM32F407_UART_Write	16	static
+../Core/Src/usart.c:128:19:STM32F407_UART_Receive	16	static
+../Core/Src/usart.c:134:19:STM32F407_UART_Read_it	16	static
