@@ -34,26 +34,32 @@
 #define MUX_RESET 0x01      // Reset MUX0 Register
 /* PSEL3:0 Positive input channel selection bits */
 /* Positive input channel selection bits */
-#define P_AIN0  0x00  // (default)
-#define P_AIN1  0x10
-#define P_AIN2  0x20
-#define P_AIN3  0x30
-#define P_AIN4  0x40
-#define P_AIN5  0x50
-#define P_AIN6  0x60
-#define P_AIN7  0x70
-#define P_AINCOM 0x80
+
+typedef enum{
+ P_AIN0  = 0x00,  // (default)
+ P_AIN1  = 0x10,
+ P_AIN2  = 0x20,
+ P_AIN3  = 0x30,
+ P_AIN4  = 0x40,
+ P_AIN5  = 0x50,
+ P_AIN6  = 0x60,
+ P_AIN7  = 0x70,
+ P_AINCOM= 0x80
+}P_AIN;
 
 /* Negative input channel selection bits (NSEL3:0) */
-#define N_AIN0  0x00
-#define N_AIN1  0x01  // (default)
-#define N_AIN2  0x02
-#define N_AIN3  0x03
-#define N_AIN4  0x04
-#define N_AIN5  0x05
-#define N_AIN6  0x06
-#define N_AIN7  0x07
-#define N_AINCOM 0x08
+typedef enum{
+ N_AIN0 = 0x00,
+ N_AIN1 = 0x01,  // (default)
+ N_AIN2 = 0x02,
+ N_AIN3 = 0x03,
+ N_AIN4 = 0x04,
+ N_AIN5 = 0x05,
+ N_AIN6 = 0x06,
+ N_AIN7 = 0x07,
+ N_AINCOM =0x08
+}N_AIN;
+
 
 /* MUX1 - Multiplexer Control Register 1 */
 /*  BIT7   -   BIT6   -   BIT5   -   BIT4   -   BIT3   -  BIT2   -  BIT1   -  BIT0 */
@@ -65,25 +71,32 @@
 off completely, or allow the reference state to follow the state of the device. Note that the internal
 reference is required for operation the IDAC functions.*/
 /* Voltage Reference Control (VREFCON1[1:0]) */
-#define VREFCON1_OFF  0x00  // Internal reference always off (default)
-#define VREFCON1_ON   0x20  // Internal reference always on
-#define VREFCON1_PS   0x60  // Internal reference on during conversion
+typedef enum{
+ VREFCON1_OFF = 0x00,  // Internal reference always off (default)
+ VREFCON1_ON  = 0x20,  // Internal reference always on
+ VREFCON1_PS  = 0x60,  // Internal reference on during conversion
+}internal_ref;
+
 
 /* Reference Input Selection (REFSELT1[1:0]) */
-#define REFSELT1_REF0      0x00  // REFP0 and REFN0 reference inputs selected  (default)
-#define REFSELT1_REF1      0x08  // REF1 input pair selected applicabe on ads1248
-#define REFSELT1_ON        0x10  // Onboard reference selected
-#define REFSELT1_ON_REF0   0x18  // Onboard reference connected to REF0
+typedef enum{
+ REFSELT1_REF0   =   0x00,  // REFP0 and REFN0 reference inputs selected  (default)
+ REFSELT1_REF1   =   0x08,  // REF1 input pair selected applicabe on ads1248
+ REFSELT1_ON     =   0x10, // Onboard reference selected
+ REFSELT1_ON_REF0 =   0x18,  // Onboard reference connected to REF0
+}select_ref;
 
 /* Multiplexer Calibration (MUXCAL2[2:0]) */
-#define MUXCAL2_NORMAL  0x00  // Normal operation (default)
-#define MUXCAL2_OFFSET  0x01  // Offset measurement
-#define MUXCAL2_GAIN    0x02  // Gain measurement
-#define MUXCAL2_TEMP    0x03  // Temperature diode
-#define MUXCAL2_REF1    0x04  // External REF1 measurement
-#define MUXCAL2_REF0    0x05  // External REF0 measurement
-#define MUXCAL2_AVDD    0x06  // AVDD measurement
-#define MUXCAL2_DVDD    0x07  // DVDD measurement
+typedef enum{
+ MUXCAL2_NORMAL = 0x00,  // Normal operation (default)
+ MUXCAL2_OFFSET = 0x01,  // Offset measurement
+ MUXCAL2_GAIN   = 0x02,  // Gain measurement
+ MUXCAL2_TEMP   = 0x03,  // Temperature diode
+ MUXCAL2_REF1   = 0x04,  // External REF1 measurement
+ MUXCAL2_REF0   = 0x05,  // External REF0 measurement
+ MUXCAL2_AVDD   = 0x06,  // AVDD measurement
+ MUXCAL2_DVDD   = 0x07,  // DVDD measurement
+}sys_moiter;
 
 
 
@@ -91,27 +104,79 @@ reference is required for operation the IDAC functions.*/
 /* BIT7 - BIT6 - BIT5 - BIT4 - BIT3 - BIT2 - BIT1 - BIT0 */
 /*  0   - PGA2 - PGA1 - PGA0 - DOR3 - DOR2 - DOR1 - DOR0 */
 /* Programmable Gain Amplifier settings (PGA2[2:0]) */
-#define PGA2_0   0x00  // Gain = 1 (default)
-#define PGA2_2   0x10  // Gain = 2
-#define PGA2_4   0x20  // Gain = 4
-#define PGA2_8   0x30  // Gain = 8
-#define PGA2_16  0x40  // Gain = 16
-#define PGA2_32  0x50  // Gain = 32
-#define PGA2_64  0x60  // Gain = 64
-#define PGA2_128 0x70  // Gain = 128
+typedef enum{
+ PGA2_0 =  0x00,  // Gain = 1 (default)
+ PGA2_2 =  0x10,  // Gain = 2
+ PGA2_4 =  0x20,  // Gain = 4
+ PGA2_8 =  0x30,  // Gain = 8
+ PGA2_16 =  0x40,  // Gain = 16
+ PGA2_32 =  0x50,  // Gain = 32
+ PGA2_64 = 0x60,  // Gain = 64
+ PGA2_128 = 0x70  // Gain = 128
+}PGAX;
 
 /* Data Output Rate settings (DOR3[3:0]) */
-#define DOR3_5    0x00  // 5 SPS (default)
-#define DOR3_10   0x01  // 10 SPS
-#define DOR3_20   0x02  // 20 SPS
-#define DOR3_40   0x03  // 40 SPS
-#define DOR3_80   0x04  // 80 SPS
-#define DOR3_160  0x05  // 160 SPS
-#define DOR3_320  0x06  // 320 SPS
-#define DOR3_640  0x07  // 640 SPS
-#define DOR3_1000 0x08  // 1000 SPS
-#define DOR3_2000 0x09  // 2000 SPS
+typedef enum{
+ DOR3_5  =  0x00,  // 5 SPS (default)
+ DOR3_10  = 0x01,  // 10 SPS
+ DOR3_20  = 0x02,  // 20 SPS
+ DOR3_40  = 0x03,  // 40 SPS
+ DOR3_80  = 0x04,  // 80 SPS
+ DOR3_160 = 0x05,  // 160 SPS
+ DOR3_320 = 0x06,  // 320 SPS
+ DOR3_640 = 0x07,  // 640 SPS
+ DOR3_1000 = 0x08,  // 1000 SPS
+ DOR3_2000 = 0x09  // 2000 SPS
+}data_rate;
 
+
+/*Bias voltage register*/
+/* BIT7 - BIT6 - BIT5 - BIT4 - BIT3      - BIT2    - BIT1    -  BIT0 */
+/*  0   - 0     - 0-     0    VBIAS[3]   - VBIAS[2]- VBIAS[1] - VBIAS[0] */
+
+typedef enum{
+ DIS_BIAS_AINx  = 0x00,
+ EN_BIAS_AIN0	= 0x01,
+ EN_BIAS_AIN1   = 0x04,
+ EN_BIAS_AIN2   = 0x08,
+ EN_BIAS_AIN3   = 0x10
+
+
+}EN_BIAS_AINX;
+
+
+/* IDAC2 magnitude selection (3 bits) */
+typedef enum{
+ IMAG2_OFF  =  0x00,   // off (default)
+ IMAG2_50   =  0x01,   // 50 µA
+ IMAG2_100  =  0x02,   // 100 µA
+ IMAG2_250  =  0x03,   // 250 µA
+ IMAG2_500  =  0x04,   // 500 µA
+ IMAG2_750  = 0x05 ,  // 750 µA
+ IMAG2_1000 =  0x06 ,  // 1000 µA
+ IMAG2_1500 =  0x07   // 1500 µA
+}exi_mag_sel;
+
+
+/* IDAC1- IDAC Control Register 1 (see p47 - bring together with bitwise OR | */
+/*  BIT7  -  BIT6  -  BIT5  -  BIT4  - BIT3   -  BIT2  -  BIT1  -  BIT0 */
+/* I1DIR3 - I1DIR2 - I1DIR2 - I1DIR0 - I2DIR3 - I2DIR2 - I2DIR1 - I2DIR0 */
+/* I1DIR3:0 These bits select the output pin for the first current source DAC  */
+/* IDAC1 (I1) output routing – 4 bits (bits 7-4 in IDAC1 register) */
+typedef enum{
+ I1DIR_AIN0  = 0x00 ,  // AIN0
+ I1DIR_AIN1 =  0x10 ,  // AIN1
+ I1DIR_AIN2  = 0x20 ,  // AIN2
+ I1DIR_AIN3  = 0x30 ,  // AIN3
+ I1DIR_OFF   = 0xC0   // Disconnected (default)
+}exi_sel_pin;
+
+/* I2DIR3:0 These bits select the output pin for the second current source DAC  */
+#define		I2DIR_AIN0     0x00    // AIN0
+#define		I2DIR_AIN1     0x01    // AIN1
+#define		I2DIR_AIN2     0x02    // AIN2
+#define		I2DIR_AIN3     0x03    // AIN3
+#define		I2DIR_OFF      0x0C    // Disconnected (default)
 
 /*cmd for ADS1247*/
 
@@ -148,6 +213,22 @@ reference is required for operation the IDAC functions.*/
 #define START_LOW 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, START_DISABLE)
 #define DRDY_PIN    GPIO_PIN_13
 #define DRDY_PORT   GPIOB
+
+typedef struct{
+	P_AIN 		 sel_channel_P;//positive channel of adc
+	N_AIN 		 sel_channel_N;//negative channel of adc
+	EN_BIAS_AINX sel_bias;//bias voltage for adc pin
+	internal_ref sel_internal_ref;//deside is internal reference ON|OFF
+	select_ref 	 sel_ref;//select pin for reference or select internal reference
+	sys_moiter 	 sel_sys_moniter;//select system componet to moniter by adc
+	PGAX 		 sel_pga;//select programable gain array
+	data_rate 	 sel_dr;//data rate
+	exi_mag_sel  sel_exc_mag;//select the excitation current
+	exi_sel_pin  sel_exc_out;//excitation output pin
+
+
+
+}adc124xx_t;
 
 uint8_t ADS1247_read_register(uint8_t addr,uint8_t byte);
 uint8_t ADS1247_write_register(uint8_t addr,uint8_t byte,uint8_t data);

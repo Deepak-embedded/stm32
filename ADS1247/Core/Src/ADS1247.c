@@ -108,6 +108,58 @@ int32_t ADS1247_ReadData(void){
   *
   * 		return :- read adc conversion if sucess or -1 on fail
   */
+void rtd_init(adc124xx_t *conf){
+	  // Reset and Start
+	  RESET_LOW;
+	  HAL_Delay(10);
+	  RESET_HIGH;
+	  HAL_Delay(10);
+
+	  START_HIGH;
+	  HAL_Delay(10);
+
+	  // Stop continuous read
+	  uint8_t cmd = CMD_SDATAC;
+	  CS_LOW;
+	  HAL_Delay(10);
+	  HAL_SPI_Transmit(&hspi2, &cmd, 1, 2000);
+	  HAL_Delay(10);
+	  CS_HIGH;
+	  HAL_Delay(1000);
+
+	  if((conf->sel_channel_P==P_AIN0 || conf->sel_channel_P>=P_AIN1 || conf->sel_channel_P<=P_AINCOM)
+			  && (conf->sel_channel_N== N_AIN0||conf->sel_channel_N>=N_AIN1||conf->sel_channel_N<=N_AIN1)){
+		  ADS1247_write_register(REG_MUX0,1, conf->sel_channel_P|conf->sel_channel_N);
+	  }HAL_Delay(10);
+
+	  if(conf->sel_bias==EN_BIAS_AIN0 || conf->sel_bias==EN_BIAS_AIN1 ||conf->sel_bias==EN_BIAS_AIN2 || conf->sel_bias==EN_BIAS_AIN3 || conf->sel_bias==DIS_BIAS_AINx){
+		  ADS1247_write_register(REG_VBIAS,1, conf->sel_bias);
+	  }HAL_Delay(10);
+
+	  if((conf->sel_dr>=DOR3_5 || conf->sel_dr<=DOR3_2000) && (conf->sel_pga>=PGA2_0 || conf->sel_pga<=PGA2_128)){
+		  ADS1247_write_register(REG_SYS0,1, conf->sel_dr|conf->sel_pga);
+	  }HAL_Delay(10);
+
+	  if(conf->sel_exc_mag>=IMAG2_OFF || conf->sel_exc_mag<=IMAG2_1500){
+		  ADS1247_write_register(REG_IDAC0,1, conf->sel_exc_mag);
+	  }HAL_Delay(10);
+
+	  if(conf->sel_exc_out==I1DIR_AIN0 ||conf->sel_exc_out==I1DIR_AIN1 || conf->sel_exc_out==I1DIR_AIN2 ||conf->sel_exc_out==I1DIR_AIN3 ||conf->sel_exc_out==I1DIR_OFF){
+		  ADS1247_write_register(REG_IDAC1,1, conf->sel_exc_out);
+	  }HAL_Delay(10);
+
+	  if((conf->sel_sys_moniter>=MUXCAL2_NORMAL||conf->sel_sys_moniter<=MUXCAL2_DVDD)
+			  && (conf->sel_internal_ref ==VREFCON1_OFF || conf->sel_internal_ref ==VREFCON1_ON ||conf->sel_internal_ref ==VREFCON1_PS)
+			  &&conf->sel_ref==REFSELT1_REF0 ||conf->sel_ref==REFSELT1_REF1 ||conf->sel_ref==REFSELT1_ON ||conf->sel_ref==REFSELT1_ON_REF0){
+		  ADS1247_write_register(REG_MUX1,1, conf->sel_sys_moniter|conf->sel_internal_ref|conf->sel_ref);
+	  }HAL_Delay(10);
+
+
+
+
+
+
+}
 
 void ADS1247_begin(void)
 {

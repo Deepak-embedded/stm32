@@ -58,11 +58,26 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void test_RTD(){
+	adc124xx_t ads={
+			.sel_channel_P=P_AIN0,
+			.sel_channel_N=N_AIN1,
+			.sel_bias=EN_BIAS_AIN0,
+			.sel_dr=DOR3_5,
+			.sel_exc_mag=IMAG2_OFF,
+			.sel_exc_out=I1DIR_OFF|I2DIR_OFF,
+			.sel_internal_ref=VREFCON1_ON,
+			.sel_ref=REFSELT1_ON,
+			.sel_pga=PGA2_0,
+			.sel_sys_moniter=MUXCAL2_NORMAL
+	};
+
+}
 
 /* USER CODE END 0 */
 
 /**
-  * @brief  The application entry point.
+  * @brief  The application entry point
   * @retval int
   */
 int main(void)
