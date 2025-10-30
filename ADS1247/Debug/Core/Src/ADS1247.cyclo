@@ -1,7 +1,7 @@
-../Core/Src/ADS1247.c:20:10:ADS1247_read_register	3
-../Core/Src/ADS1247.c:49:9:ADS1247_write_register	4
-../Core/Src/ADS1247.c:81:9:ADS1247_ReadData	3
-../Core/Src/ADS1247.c:111:6:rtd_init	24
-../Core/Src/ADS1247.c:164:6:ADS1247_begin	1
-../Core/Src/ADS1247.c:208:9:write_cmd	1
-../Core/Src/ADS1247.c:217:7:ads1247_raw_to_voltage	1
+../Core/Src/ADS1247.c:21:10:ADS1247_read_register	3
+../Core/Src/ADS1247.c:50:9:ADS1247_write_register	4
+../Core/Src/ADS1247.c:82:9:ADS1247_ReadData	4
+../Core/Src/ADS1247.c:112:6:ads1247_init	24
+../Core/Src/ADS1247.c:165:6:ADS1247_begin	1
+../Core/Src/ADS1247.c:225:9:write_cmd	1
+../Core/Src/ADS1247.c:234:8:ads1247_raw_to_voltage	1

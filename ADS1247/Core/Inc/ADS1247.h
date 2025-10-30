@@ -168,15 +168,15 @@ typedef enum{
  I1DIR_AIN1 =  0x10 ,  // AIN1
  I1DIR_AIN2  = 0x20 ,  // AIN2
  I1DIR_AIN3  = 0x30 ,  // AIN3
- I1DIR_OFF   = 0xC0   // Disconnected (default)
+ I1DIR_OFF   = 0xC0,   // Disconnected (default)
+ I2DIR_AIN0  =   0x00,    // AIN0
+ I2DIR_AIN1  =   0x01,    // AIN1
+ I2DIR_AIN2  =   0x02,   // AIN2
+ I2DIR_AIN3  =   0x03,    // AIN3
+ I2DIR_OFF   =   0x0C    // Disconnected (default)
 }exi_sel_pin;
 
 /* I2DIR3:0 These bits select the output pin for the second current source DAC  */
-#define		I2DIR_AIN0     0x00    // AIN0
-#define		I2DIR_AIN1     0x01    // AIN1
-#define		I2DIR_AIN2     0x02    // AIN2
-#define		I2DIR_AIN3     0x03    // AIN3
-#define		I2DIR_OFF      0x0C    // Disconnected (default)
 
 /*cmd for ADS1247*/
 
@@ -235,5 +235,6 @@ uint8_t ADS1247_write_register(uint8_t addr,uint8_t byte,uint8_t data);
 uint8_t write_cmd(uint8_t cmd);
 int32_t ADS1247_ReadData(void);
 void ADS1247_begin(void);
-float ads1247_raw_to_voltage(int32_t raw, float vref, uint8_t pga);
+void ads1247_init(adc124xx_t *conf);
+double ads1247_raw_to_voltage(int32_t raw, float vref, uint8_t pga);
 #endif

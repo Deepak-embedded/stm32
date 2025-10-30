@@ -10,6 +10,7 @@
 #include "spi.h"
 uint8_t read_cmd[10];
 uint8_t writecmd[10] ;
+double temp=0.0;
 
 /**
   * @brief  addr :-address of register
@@ -97,8 +98,8 @@ int32_t ADS1247_ReadData(void){
   CS_HIGH;
   value = ((int32_t)rx[0] << 16) | ((int32_t)rx[1] << 8) | rx[2];
   // Sign extension for 24-bit data
-//  if (value & 0x800000)
-//	  value |= 0xFF000000;
+  if (value & 0x800000)
+	  value |= 0xFF000000;
 
   return value;
 }
@@ -108,7 +109,7 @@ int32_t ADS1247_ReadData(void){
   *
   * 		return :- read adc conversion if sucess or -1 on fail
   */
-void rtd_init(adc124xx_t *conf){
+void ads1247_init(adc124xx_t *conf){
 	  // Reset and Start
 	  RESET_LOW;
 	  HAL_Delay(10);
@@ -150,7 +151,7 @@ void rtd_init(adc124xx_t *conf){
 
 	  if((conf->sel_sys_moniter>=MUXCAL2_NORMAL||conf->sel_sys_moniter<=MUXCAL2_DVDD)
 			  && (conf->sel_internal_ref ==VREFCON1_OFF || conf->sel_internal_ref ==VREFCON1_ON ||conf->sel_internal_ref ==VREFCON1_PS)
-			  &&conf->sel_ref==REFSELT1_REF0 ||conf->sel_ref==REFSELT1_REF1 ||conf->sel_ref==REFSELT1_ON ||conf->sel_ref==REFSELT1_ON_REF0){
+			  && (conf->sel_ref==REFSELT1_REF0 ||conf->sel_ref==REFSELT1_REF1 ||conf->sel_ref==REFSELT1_ON ||conf->sel_ref==REFSELT1_ON_REF0)){
 		  ADS1247_write_register(REG_MUX1,1, conf->sel_sys_moniter|conf->sel_internal_ref|conf->sel_ref);
 	  }HAL_Delay(10);
 
@@ -183,18 +184,34 @@ void ADS1247_begin(void)
 
 	  // Configure basic registers
 
-	  ADS1247_write_register(REG_MUX0,1, P_AIN0|N_AINCOM);
-	  HAL_Delay(10);
+//	  ADS1247_write_register(REG_MUX0,1, P_AIN0|N_AINCOM);
+//	  HAL_Delay(10);
 //	  uint8_t var=ADS1247_read_register(REG_MUX0,1);//optional for sanity check
-	  HAL_Delay(10);
-
-	  ADS1247_write_register(REG_MUX1,1,VREFCON1_ON | REFSELT1_ON);
-	  HAL_Delay(10);
+//	  HAL_Delay(10);
+//
+//	  ADS1247_write_register(REG_MUX1,1,VREFCON1_ON | REFSELT1_ON);
+//	  HAL_Delay(10);
 //	  var=ADS1247_read_register(REG_MUX1,1);////optional for sanity check
-	  HAL_Delay(10);
+//	  HAL_Delay(10);
 
-	  ADS1247_write_register(REG_MUX1,1,DOR3_20 | PGA2_0);
-	  HAL_Delay(10);
+//	  ADS1247_write_register(REG_SYS0,1,PGA2_0 | DOR3_5);
+//	  uint8_t var=ADS1247_read_register(REG_SYS0,1);////optional for sanity check
+//	  HAL_Delay(10);
+	  //ADS1247_write_register(REG_VBIAS,1,EN_BIAS_AIN0 | EN_BIAS_AIN1);
+
+	adc124xx_t ads={
+			.sel_channel_P=P_AIN0,
+			.sel_channel_N=N_AIN1,
+			.sel_bias=DIS_BIAS_AINx,
+			.sel_dr=DOR3_5,
+			.sel_exc_mag=IMAG2_OFF,
+			.sel_exc_out=I1DIR_OFF|I2DIR_OFF,
+			.sel_internal_ref=VREFCON1_ON,
+			.sel_ref=REFSELT1_ON,
+			.sel_pga=PGA2_0,
+			.sel_sys_moniter=MUXCAL2_NORMAL
+	};
+	ads1247_init(&ads);
 
 
 }
@@ -214,8 +231,9 @@ uint8_t write_cmd(uint8_t cmd){
 	return 0;
 }
 
-float ads1247_raw_to_voltage(int32_t raw, float vref, uint8_t pga) {
-    const int32_t FULL_SCALE =16777216 ;//8388608;  // 2^23
-    return (float)raw * vref / (FULL_SCALE * pga);
+double ads1247_raw_to_voltage(int32_t raw, float vref, uint8_t pga) {
+    const int32_t FULL_SCALE =8388608;  // 2^23
+
+    return ((raw * vref )/ FULL_SCALE*pga)+0.001;
 }
 

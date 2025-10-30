@@ -20,45 +20,23 @@
 #include "main.h"
 #include "spi.h"
 #include "gpio.h"
+#include "math.h"
 #include "ADS1247.h"
 
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
 
-/* USER CODE END Includes */
-
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-
-/* USER CODE END PTD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
-/* Private variables ---------------------------------------------------------*/
-
-/* USER CODE BEGIN PV */
 uint8_t status;
 int32_t raw;
 double voltage;
+double result_temp=0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-/* USER CODE BEGIN PFP */
 
-/* USER CODE END PFP */
-
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
 void test_RTD(){
+	static double R0 =  100;//0 degree for 0 ohm
+	static double A =  0.00390802;//by IEC-60751
+	static double B = -0.0000005802;
 	adc124xx_t ads={
 			.sel_channel_P=P_AIN0,
 			.sel_channel_N=N_AIN1,
@@ -71,6 +49,12 @@ void test_RTD(){
 			.sel_pga=PGA2_0,
 			.sel_sys_moniter=MUXCAL2_NORMAL
 	};
+	rtd_init(&ads);
+	raw =  ADS1247_ReadData();
+	double result_volt=ads1247_raw_to_voltage(raw, 2.048, 1);
+	double result_resistance = result_volt/0.002; //
+	result_temp = (-R0*A+sqrt(pow(R0*A,2)-4*R0*B*(R0-result_resistance)))/(2*R0*B);
+	//Define PT100 Coeffients
 
 }
 
@@ -84,14 +68,15 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-	char *data="UART2 TESTING\n\r";
+//	char *data="UART2 TESTING\n\r";
 
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+
+	HAL_Init();
 
   /* USER CODE BEGIN Init */
  // uint8_t temp[2];
@@ -111,17 +96,20 @@ int main(void)
 
 
 
+
   while (1)
   {
 	 status=HAL_GPIO_ReadPin(DRDY_PORT, DRDY_PIN);
     if (HAL_GPIO_ReadPin(DRDY_PORT, DRDY_PIN) == GPIO_PIN_RESET)
     {
-    	raw =  ADS1247_ReadData();
-    	voltage = (2.048 / 16777216)*raw;
+//    	raw =  ADS1247_ReadData();
+//    	voltage = (2.048 / 16777216)*raw;
 
-//      raw = ADS1247_ReadData();
-//      voltage =ads1247_raw_to_voltage(raw, 3,1);
-      HAL_Delay(1000);
+      raw = ADS1247_ReadData();
+     // result_temp =ads1247_raw_to_voltage(raw, 2.048,1);
+      result_temp =ads1247_raw_to_voltage(raw, 2.96,1);
+
+//      HAL_Delay(1000);
 
     }
   }
@@ -173,9 +161,7 @@ void SystemClock_Config(void)
   }
 }
 
-/* USER CODE BEGIN 4 */
 
-/* USER CODE END 4 */
 
 /**
   * @brief  This function is executed in case of error occurrence.
