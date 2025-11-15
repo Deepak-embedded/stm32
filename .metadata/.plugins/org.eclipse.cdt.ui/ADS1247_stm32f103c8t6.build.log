@@ -1,0 +1,10 @@
+16:41:38 **** Incremental Build of configuration Debug for project ADS1247_stm32f103c8t6 ****
+make -j8 all 
+arm-none-eabi-size  ADS1247_stm32f103c8t6.elf 
+   text	   data	    bss	    dec	    hex	filename
+  10048	     12	   1680	  11740	   2ddc	ADS1247_stm32f103c8t6.elf
+Finished building: default.size.stdout
+ 
+
+16:41:38 Build Finished. 0 errors, 0 warnings. (took 438ms)
+

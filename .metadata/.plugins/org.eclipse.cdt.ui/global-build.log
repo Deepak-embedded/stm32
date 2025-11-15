@@ -1,0 +1,34 @@
+17:55:03 **** Incremental Build of configuration Debug for project stm32f1 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/ADS1247.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xE -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/ADS1247.d" -MT"Core/Src/ADS1247.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/ADS1247.o"
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xE -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/ADS1247.c:429:14: warning: 'k_type_uV_to_C' defined but not used [-Wunused-function]
+  429 | static float k_type_uV_to_C(float mV) {
+      |              ^~~~~~~~~~~~~~
+../Core/Src/ADS1247.c:279:14: warning: 'T_type_mV_to_C' defined but not used [-Wunused-function]
+  279 | static float T_type_mV_to_C(float mV) {
+      |              ^~~~~~~~~~~~~~
+../Core/Src/ADS1247.c:252:14: warning: 'T_type_C_to_mV' defined but not used [-Wunused-function]
+  252 | static float T_type_C_to_mV(float tC) {
+      |              ^~~~~~~~~~~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:121:23: warning: unused variable 'B' [-Wunused-variable]
+  121 |         static double B = -0.0000005802;
+      |                       ^
+../Core/Src/main.c:120:23: warning: unused variable 'A' [-Wunused-variable]
+  120 |         static double A =  0.00390802;//by IEC-60751
+      |                       ^
+../Core/Src/main.c:119:23: warning: unused variable 'R0' [-Wunused-variable]
+  119 |         static double R0 =  100;//0 degree for 100 ohm
+      |                       ^~
+arm-none-eabi-gcc -o "stm32f1.elf" @"objects.list"   -mcpu=cortex-m3 -T"G:\Deepak\stm32\stm32f1\STM32F103RCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f1.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: stm32f1.elf
+ 
+arm-none-eabi-size  stm32f1.elf 
+arm-none-eabi-objdump -h -S stm32f1.elf  > "stm32f1.list"
+   text	   data	    bss	    dec	    hex	filename
+  15580	     12	   1688	  17280	   4380	stm32f1.elf
+Finished building: default.size.stdout
+ 
+Finished building: stm32f1.list
+ 

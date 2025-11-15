@@ -1,0 +1,17 @@
+../Core/Src/glcd.c:38:6:SendByteSPI	24	static
+../Core/Src/glcd.c:59:6:ST7920_SendCmd	16	static
+../Core/Src/glcd.c:73:6:ST7920_SendData	16	static
+../Core/Src/glcd.c:85:6:ST7920_SendString	24	static
+../Core/Src/glcd.c:118:6:ST7920_GraphicMode	16	static
+../Core/Src/glcd.c:139:6:ST7920_DrawBitmap	24	static
+../Core/Src/glcd.c:170:6:ST7920_Update	8	static
+../Core/Src/glcd.c:177:6:ST7920_Clear	16	static
+../Core/Src/glcd.c:210:6:ST7920_Init	8	static
+../Core/Src/glcd.c:247:6:SetPixel	24	static
+../Core/Src/glcd.c:271:6:DrawLine	48	static
+../Core/Src/glcd.c:305:6:DrawRectangle	24	static
+../Core/Src/glcd.c:339:6:DrawFilledRectangle	32	static
+../Core/Src/glcd.c:374:6:DrawCircle	40	static
+../Core/Src/glcd.c:413:6:DrawFilledCircle	40	static
+../Core/Src/glcd.c:448:6:DrawTriangle	24	static
+../Core/Src/glcd.c:459:6:DrawFilledTriangle	56	static

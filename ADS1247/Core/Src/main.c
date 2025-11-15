@@ -32,18 +32,22 @@ double result_temp=0;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-
+double calculate_RTD(int32_t adc_code, double Rref, int gain)
+{
+	const int32_t ADC_FULLSCALE =8388608;  // 2^23
+    return (Rref * adc_code) / (ADC_FULLSCALE * gain);
+}
 void test_RTD(){
-	static double R0 =  100;//0 degree for 0 ohm
+	static double R0 =  100;//0 degree for 100 ohm
 	static double A =  0.00390802;//by IEC-60751
 	static double B = -0.0000005802;
 	adc124xx_t ads={
-			.sel_channel_P=P_AIN0,
-			.sel_channel_N=N_AIN1,
-			.sel_bias=EN_BIAS_AIN0,
-			.sel_dr=DOR3_5,
-			.sel_exc_mag=IMAG2_OFF,
-			.sel_exc_out=I1DIR_OFF|I2DIR_OFF,
+			.sel_channel_P=P_AIN1,
+			.sel_channel_N=N_AIN2,
+			.sel_bias=DIS_BIAS_AINx,
+			.sel_dr=DOR3_20,
+			.sel_exc_mag=IMAG2_1000,
+			.sel_exc_out=I2DIR_AIN0|I2DIR_AIN3,
 			.sel_internal_ref=VREFCON1_ON,
 			.sel_ref=REFSELT1_ON,
 			.sel_pga=PGA2_0,
@@ -52,7 +56,8 @@ void test_RTD(){
 	rtd_init(&ads);
 	raw =  ADS1247_ReadData();
 	double result_volt=ads1247_raw_to_voltage(raw, 2.048, 1);
-	double result_resistance = result_volt/0.002; //
+//	double result_resistance = result_volt/0.002; //
+	double result_resistance=calculate_RTD(raw,1000,32);
 	result_temp = (-R0*A+sqrt(pow(R0*A,2)-4*R0*B*(R0-result_resistance)))/(2*R0*B);
 	//Define PT100 Coeffients
 
@@ -64,6 +69,56 @@ void test_RTD(){
   * @brief  The application entry point
   * @retval int
   */
+void analog_supplie_init(){
+	  // Reset and Start
+	  RESET_LOW;
+	  HAL_Delay(10);
+	  RESET_HIGH;
+	  HAL_Delay(10);
+
+	  START_HIGH;
+	  HAL_Delay(10);
+
+	  // Stop continuous read
+	  uint8_t cmd = CMD_SDATAC;
+	  CS_LOW;
+	  HAL_Delay(10);
+	  HAL_SPI_Transmit(&hspi2, &cmd, 1, 2000);
+	  HAL_Delay(10);
+	  CS_HIGH;
+	  HAL_Delay(1000);
+
+	  // Configure basic registers
+
+//	  ADS1247_write_register(REG_MUX0,1, P_AIN0|N_AINCOM);
+//	  HAL_Delay(10);
+//	  uint8_t var=ADS1247_read_register(REG_MUX0,1);//optional for sanity check
+//	  HAL_Delay(10);
+//
+//	  ADS1247_write_register(REG_MUX1,1,VREFCON1_ON | REFSELT1_ON);
+//	  HAL_Delay(10);
+//	  var=ADS1247_read_register(REG_MUX1,1);////optional for sanity check
+//	  HAL_Delay(10);
+
+//	  ADS1247_write_register(REG_SYS0,1,PGA2_0 | DOR3_5);
+//	  uint8_t var=ADS1247_read_register(REG_SYS0,1);////optional for sanity check
+//	  HAL_Delay(10);
+	  //ADS1247_write_register(REG_VBIAS,1,EN_BIAS_AIN0 | EN_BIAS_AIN1);
+
+	adc124xx_t ads={
+			.sel_channel_P=P_AIN0,
+			.sel_channel_N=N_AIN1,
+			.sel_bias=DIS_BIAS_AINx,
+			.sel_dr=DOR3_5,
+			.sel_exc_mag=IMAG2_OFF,
+			.sel_exc_out=I1DIR_OFF|I2DIR_OFF,
+			.sel_internal_ref=VREFCON1_ON,
+			.sel_ref=REFSELT1_ON,
+			.sel_pga=PGA2_0,
+			.sel_sys_moniter=MUXCAL2_AVDD
+	};
+	ads1247_init(&ads);
+}
 int main(void)
 {
 
@@ -71,7 +126,10 @@ int main(void)
 //	char *data="UART2 TESTING\n\r";
 
   /* USER CODE END 1 */
-
+	HAL_Delay(2000); // Add a 2-second delay
+	HAL_FLASH_Unlock();
+	// Flash operations here
+	HAL_FLASH_Lock();
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
@@ -93,7 +151,7 @@ int main(void)
   MX_GPIO_Init();
   MX_SPI2_Init();
   ADS1247_begin();
-
+  //analog_supplie_init();
 
 
 

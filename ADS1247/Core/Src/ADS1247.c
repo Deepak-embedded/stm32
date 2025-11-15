@@ -186,35 +186,36 @@ void ADS1247_begin(void)
 
 //	  ADS1247_write_register(REG_MUX0,1, P_AIN0|N_AINCOM);
 //	  HAL_Delay(10);
-//	  uint8_t var=ADS1247_read_register(REG_MUX0,1);//optional for sanity check
+	  uint8_t var=ADS1247_read_register(REG_MUX0,1);//optional for sanity check
 //	  HAL_Delay(10);
 //
-//	  ADS1247_write_register(REG_MUX1,1,VREFCON1_ON | REFSELT1_ON);
-//	  HAL_Delay(10);
-//	  var=ADS1247_read_register(REG_MUX1,1);////optional for sanity check
-//	  HAL_Delay(10);
+	  ADS1247_write_register(REG_MUX1,1,VREFCON1_ON | REFSELT1_ON);
+	  HAL_Delay(10);
+	  var=ADS1247_read_register(REG_MUX1,1);////optional for sanity check
+	  HAL_Delay(10);
 
 //	  ADS1247_write_register(REG_SYS0,1,PGA2_0 | DOR3_5);
 //	  uint8_t var=ADS1247_read_register(REG_SYS0,1);////optional for sanity check
 //	  HAL_Delay(10);
 	  //ADS1247_write_register(REG_VBIAS,1,EN_BIAS_AIN0 | EN_BIAS_AIN1);
 
-	adc124xx_t ads={
-			.sel_channel_P=P_AIN0,
-			.sel_channel_N=N_AIN1,
-			.sel_bias=DIS_BIAS_AINx,
-			.sel_dr=DOR3_5,
-			.sel_exc_mag=IMAG2_OFF,
-			.sel_exc_out=I1DIR_OFF|I2DIR_OFF,
-			.sel_internal_ref=VREFCON1_ON,
-			.sel_ref=REFSELT1_ON,
-			.sel_pga=PGA2_0,
-			.sel_sys_moniter=MUXCAL2_NORMAL
-	};
-	ads1247_init(&ads);
+//	adc124xx_t ads={
+//			.sel_channel_P=P_AINCOM,
+//			.sel_channel_N=P_AINCOM,
+//			.sel_bias=DIS_BIAS_AINx,
+//			.sel_dr=DOR3_5,
+//			.sel_exc_mag=IMAG2_OFF,
+//			.sel_exc_out=I1DIR_OFF|I2DIR_OFF,
+//			.sel_internal_ref=VREFCON1_ON,
+//			.sel_ref=REFSELT1_ON,
+//			.sel_pga=PGA2_0,
+//			.sel_sys_moniter=MUXCAL2_NORMAL
+//	};
+//	ads1247_init(&ads);
 
 
 }
+
 
 /**
   * @brief  :- write the adc cmd see @brief1

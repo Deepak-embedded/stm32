@@ -3,5 +3,5 @@
 ../Core/Src/ADS1247.c:82:9:ADS1247_ReadData	4
 ../Core/Src/ADS1247.c:112:6:ads1247_init	24
 ../Core/Src/ADS1247.c:165:6:ADS1247_begin	1
-../Core/Src/ADS1247.c:225:9:write_cmd	1
-../Core/Src/ADS1247.c:234:8:ads1247_raw_to_voltage	1
+../Core/Src/ADS1247.c:226:9:write_cmd	1
+../Core/Src/ADS1247.c:235:8:ads1247_raw_to_voltage	1

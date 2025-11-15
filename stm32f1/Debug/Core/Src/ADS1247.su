@@ -1,0 +1,14 @@
+../Core/Src/ADS1247.c:23:10:ADS1247_read_register	32	static
+../Core/Src/ADS1247.c:52:9:ADS1247_write_register	24	static
+../Core/Src/ADS1247.c:84:9:ADS1247_ReadData	40	static
+../Core/Src/ADS1247.c:117:6:ads1247_init	24	static
+../Core/Src/ADS1247.c:170:6:ADS1247_begin	24	static
+../Core/Src/ADS1247.c:229:9:write_cmd	16	static
+../Core/Src/ADS1247.c:238:8:ads1247_raw_to_voltage	40	static
+../Core/Src/ADS1247.c:243:8:thermo_voltage	40	static
+../Core/Src/ADS1247.c:252:14:T_type_C_to_mV	200	static
+../Core/Src/ADS1247.c:279:14:T_type_mV_to_C	152	static
+../Core/Src/ADS1247.c:305:14:K_type_C_to_uV	288	static
+../Core/Src/ADS1247.c:365:8:K_type_uV_to_C	288	static
+../Core/Src/ADS1247.c:429:14:k_type_uV_to_C	152	static
+../Core/Src/ADS1247.c:454:7:get_supply	56	static

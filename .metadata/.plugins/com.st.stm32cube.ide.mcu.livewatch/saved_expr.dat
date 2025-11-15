@@ -1,0 +1,6 @@
+raw
+result_temp
+result_resistance
+result_volt
+status
+(Rref * adc_code) / (ADC_FULLSCALE * gain)

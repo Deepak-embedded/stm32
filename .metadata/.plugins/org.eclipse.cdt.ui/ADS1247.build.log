@@ -1,0 +1,24 @@
+15:22:11 **** Incremental Build of configuration Debug for project ADS1247 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F407xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'test_RTD':
+../Core/Src/main.c:56:9: warning: implicit declaration of function 'rtd_init' [-Wimplicit-function-declaration]
+   56 |         rtd_init(&ads);
+      |         ^~~~~~~~
+../Core/Src/main.c:58:16: warning: unused variable 'result_volt' [-Wunused-variable]
+   58 |         double result_volt=ads1247_raw_to_voltage(raw, 2.048, 1);
+      |                ^~~~~~~~~~~
+arm-none-eabi-gcc -o "ADS1247.elf" @"objects.list"   -mcpu=cortex-m4 -T"G:\Deepak\stm32\ADS1247\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ADS1247.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: ADS1247.elf
+ 
+arm-none-eabi-size  ADS1247.elf 
+arm-none-eabi-objdump -h -S ADS1247.elf  > "ADS1247.list"
+   text	   data	    bss	    dec	    hex	filename
+  10656	     12	   1680	  12348	   303c	ADS1247.elf
+Finished building: default.size.stdout
+ 
+Finished building: ADS1247.list
+ 
+
+15:22:12 Build Finished. 0 errors, 2 warnings. (took 1s.939ms)
+
