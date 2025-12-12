@@ -1,0 +1,10 @@
+10:37:56 **** Incremental Build of configuration Debug for project ADE9078 ****
+make -j8 all 
+arm-none-eabi-size  ADE9078.elf 
+   text	   data	    bss	    dec	    hex	filename
+  13856	     20	   2088	  15964	   3e5c	ADE9078.elf
+Finished building: default.size.stdout
+ 
+
+10:37:57 Build Finished. 0 errors, 0 warnings. (took 983ms)
+

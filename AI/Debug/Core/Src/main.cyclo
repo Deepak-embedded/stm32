@@ -1,0 +1,15 @@
+../Core/Src/main.c:92:6:PollUartBaudRate	6
+../Core/Src/main.c:140:9:check_and_get_adc_conversion_mode	3
+../Core/Src/main.c:161:6:HAL_UART_RxCpltCallback	2
+../Core/Src/main.c:174:10:RingBuffer_GetCount	2
+../Core/Src/main.c:182:5:RingBuffer_Read	2
+../Core/Src/main.c:193:6:read_multi_reg	8
+../Core/Src/main.c:242:6:read_single_reg	7
+../Core/Src/main.c:334:6:get_adc_conversion_value	6
+../Core/Src/main.c:356:5:main	3
+../Core/Src/main.c:483:6:SystemClock_Config	3
+../Core/Src/main.c:522:13:MX_SPI2_Init	2
+../Core/Src/main.c:560:13:MX_USART1_UART_Init	2
+../Core/Src/main.c:593:13:MX_USART3_UART_Init	2
+../Core/Src/main.c:626:13:MX_GPIO_Init	1
+../Core/Src/main.c:678:6:Error_Handler	1

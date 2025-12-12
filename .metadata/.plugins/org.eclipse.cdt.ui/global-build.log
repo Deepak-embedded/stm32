@@ -1,0 +1,39 @@
+12:53:09 **** Incremental Build of configuration Debug for project AI ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+In file included from ../Core/Src/main.c:21:
+../Core/Inc/ADS1247.h:72:1: warning: useless storage class specifier in empty declaration
+   72 | };
+      | ^
+../Core/Src/main.c: In function 'read_multi_reg':
+../Core/Src/main.c:219:17: warning: implicit declaration of function 'sendData' [-Wimplicit-function-declaration]
+  219 |                 sendData(tx_,len-2);
+      |                 ^~~~~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:320:26: warning: unused variable 'len' [-Wunused-variable]
+  320 |                  uint8_t len=0;
+      |                          ^~~
+../Core/Src/main.c:292:17: warning: unused variable 'raw' [-Wunused-variable]
+  292 |         int32_t raw=0;
+      |                 ^~~
+../Core/Src/main.c:290:24: warning: unused variable 'buf_A' [-Wunused-variable]
+  290 |         static uint8_t buf_A=0;
+      |                        ^~~~~
+arm-none-eabi-gcc -o "AI.elf" @"objects.list"   -mcpu=cortex-m3 -T"G:\Deepak\stm32\AI\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="AI.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: AI.elf
+ 
+arm-none-eabi-size  AI.elf 
+arm-none-eabi-objdump -h -S AI.elf  > "AI.list"
+   text	   data	    bss	    dec	    hex	filename
+  19528	     32	   2552	  22112	   5660	AI.elf
+Finished building: default.size.stdout
+ 
+Finished building: AI.list
+ 
+12:53:14 **** Incremental Build of configuration Debug for project AI ****
+make -j8 all 
+arm-none-eabi-size  AI.elf 
+   text	   data	    bss	    dec	    hex	filename
+  19528	     32	   2552	  22112	   5660	AI.elf
+Finished building: default.size.stdout
+ 

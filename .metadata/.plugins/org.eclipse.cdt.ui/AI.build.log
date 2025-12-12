@@ -1,0 +1,10 @@
+12:53:14 **** Incremental Build of configuration Debug for project AI ****
+make -j8 all 
+arm-none-eabi-size  AI.elf 
+   text	   data	    bss	    dec	    hex	filename
+  19528	     32	   2552	  22112	   5660	AI.elf
+Finished building: default.size.stdout
+ 
+
+12:53:15 Build Finished. 0 errors, 0 warnings. (took 547ms)
+
