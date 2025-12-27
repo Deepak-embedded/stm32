@@ -1,0 +1,9 @@
+../Core/Src/ADS1247.c:22:10:ADS1247_read_register	3
+../Core/Src/ADS1247.c:51:9:ADS1247_write_register	4
+../Core/Src/ADS1247.c:83:9:ADS1247_ReadData	4
+../Core/Src/ADS1247.c:118:6:ads1247_init	24
+../Core/Src/ADS1247.c:171:6:ADS1247_begin	1
+../Core/Src/ADS1247.c:241:9:write_cmd	1
+../Core/Src/ADS1247.c:250:8:ads1247_raw_to_voltage	1
+../Core/Src/ADS1247.c:255:8:thermo_voltage	1
+../Core/Src/ADS1247.c:466:7:get_supply	22

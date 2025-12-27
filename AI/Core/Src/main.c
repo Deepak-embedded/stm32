@@ -23,6 +23,8 @@
 #include"string.h"
 #include "dipswitch.h"
 #include <stdbool.h>
+#include<HC595.h>
+#include<storage.h>
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -32,7 +34,7 @@ uint8_t slave_id=0x01;
 uint32_t selectedBaudRate=9600;
 uint8_t uart_rx_byte;
 static uint16_t rxcount=0;
-uint8_t adc_conversion_mode[8]={4,4,4,4,4,4,4,4};//V0_10
+uint8_t adc_conversion_mode[8]={4,4,4,4,4,4,4,4};//8 channal with default value
 static int cmd_cnt=0;
 
 uint8_t data[UART_RX_BUF_SIZE];
@@ -54,6 +56,16 @@ const MapEntry configMap[] = {
 
 int32_t Holding_Registers_Database[100]={0};
 RingBuffer_t uart_rx_rb = { .head = 0, .tail = 0 };
+
+flash_t W_flash={.channalmode={4,4,4,4,4,4,4,4},
+		.BaudRate=9600,
+		.SlaveID=0x01,
+};
+
+flash_t R_flash={.channalmode={4,4,4,4,4,4,4,4},
+		.BaudRate=9600,
+		.SlaveID=0x01,
+};
 
 /* USER CODE END Includes */
 
@@ -107,6 +119,8 @@ void PollUartBaudRate(void)
 	if (selectedBaudRate != prevBaudRate)
 	{
 		prevBaudRate = selectedBaudRate;
+
+
 
 		/* -------- UART3 -------- */
 		HAL_UART_AbortReceive(&huart3);
@@ -191,18 +205,6 @@ uint8_t reglen;
 uint8_t tx_[MIN_CMD_LEN];
 static uint16_t len = 0;
 bool read_multi_reg(){
-	//    uint8_t RxData[MAX_RX_LEN];
-//	    uint16_t len = 0;
-
-
-
-
-
-
-//		 while((rxcount=RingBuffer_GetCount(&uart_rx_rb))){
-//			 RingBuffer_Read(&uart_rx_rb, &RxData[len++]);
-//			 HAL_Delay(1);
-//		 }
 
 	    // Minimum required bytes
 	    if(len < MIN_CMD_LEN)
@@ -240,16 +242,7 @@ bool read_multi_reg(){
 }
 
 bool read_single_reg(){
-	  //uint16_t len = 0;
 
-	    // Read all available bytes from ring buffer
-
-
-
-//		 while((rxcount=RingBuffer_GetCount(&uart_rx_rb))){
-//			 RingBuffer_Read(&uart_rx_rb, &RxData[len++]);
-//			 HAL_Delay(1);
-//		 }
 
 	    // Minimum required bytes
 	    if(len < 8)
@@ -280,56 +273,7 @@ bool read_single_reg(){
 	    return true;
 }
 
-//bool get_adc_conversion_value(uint8_t *adc_conversion_mode){
-////    uint8_t RxData[MAX_RX_LEN];
-//    uint16_t len = 0;
-//
-//    // Read all available bytes from ring buffer
-//    rxcount = RingBuffer_GetCount(&uart_rx_rb);
-//    if(rxcount == 0)
-//        return false;  // no data yet
-//
-//    if(rxcount > UART_RX_BUF_SIZE)
-//        rxcount = UART_RX_BUF_SIZE; // prevent overflow
-//
-//
-//	 while((rxcount=RingBuffer_GetCount(&uart_rx_rb))){
-//		 RingBuffer_Read(&uart_rx_rb, &RxData[len++]);
-//		 HAL_Delay(1);
-//	 }
-//
-//    // Minimum required bytes
-//    if(len < MIN_CMD_LEN)
-//        return false;
-//
-//    // Extract CRC from last two bytes
-//    uint16_t crc_recv = (RxData[len-1]<<8)|RxData[len-2];
-//    uint16_t crc_calc = crc16(RxData, len - 2);
-//
-//    // Validate Modbus frame
-//    if(RxData[0] != slave_id)    return false;
-//    if(RxData[1] != MB_WRITE_FC) return false;
-//    if(crc_recv != crc_calc)     return false;
-//
-//    uint8_t byte_count = RxData[6];
-//
-//    if(len < (7 + byte_count + 2))
-//        return false;  // incomplete frame
-//		    tx[0]=RxData[0];
-//	for(i=0;i<len-2;i++){
-//		tx[i]=RxData[i];
-//	}
-//
-//	sendData(tx,len-2);
-////    // Copy data values
-////    uint8_t ind = 0;
-////    for(uint8_t i = 0; i < byte_count; i += 2)
-////    {
-////        adc_conversion_mode[ind++] = RxData[8 + i];
-////    }
-////
-//    return true;
-//}
+
 
 bool get_adc_conversion_value(uint8_t *adc_conversion_mode){
 	bool status;
@@ -348,10 +292,53 @@ bool get_adc_conversion_value(uint8_t *adc_conversion_mode){
 	 }
 
 	read_single_reg()?(status =true ):(status =false);
-	read_multi_reg()?(status= true) :(status= false);
+	//read_multi_reg()?(status= true) :(status= false);
 
     return status;
 }
+uint16_t enbit=0;
+void set_adc_conversion_mode(uint8_t *conversion_mode){
+
+for(uint8_t channal=0;channal<8;channal++){
+	for(int i=0;i<sizeof(configMap)/sizeof(MapEntry);i++){
+				if(configMap[i].regValue==conversion_mode[channal]){
+					switch(configMap[i].config){
+						case V0_5:
+							 enbit |=(1<<channal);//i is bit position set i position bit
+							break;
+						case V0_10 :
+							enbit |=(1<<channal);
+							break;
+
+						case MV0_50:
+							enbit &=~(1<<channal);//clear i position bit
+							break;
+						case MV0_100:
+							enbit &=~(1<<channal);
+							break;
+						case MV0_250 :
+							enbit &=~(1<<channal);
+							break;
+						case MA0_20:
+							enbit &=~(1<<channal);
+							break;
+						case MA4_20 :
+							enbit &=~(1<<channal);
+							break;
+
+					}
+
+				}
+//				else{
+//					enbit |=(1<<channal);//conversion mode is out of the range set it to default mode V0_10
+//				}
+
+
+		}
+}
+//input_high(enbit);
+}
+
 
 int main(void)
 {
@@ -384,32 +371,57 @@ int main(void)
   polarity_configB_B();
   latch_configB_B();
 
-//  	while(1){//wait for channal configuration
-//
-//		GPIO_readA_B();
-//		slave_id = 1;//buf_A;
-//		PollUartBaudRate();//configure baudrate for mb
-//  		if(true==get_adc_conversion_value(adc_conversion_mode))break;
-//  		HAL_Delay(1);
-//
-//  	}
+
 
 
 	while(1){
 		 uint8_t len=0;
 
 		 GPIO_readA_B();
+
 		 slave_id = 1;//buf_A;
-		 PollUartBaudRate();//configure baudrate for mb
-//		 while((rxcount=RingBuffer_GetCount(&uart_rx_rb))){
-//			  RingBuffer_Read(&uart_rx_rb, &RxData[len++]);
-//			  HAL_Delay(1);
+
+		 W_flash.SlaveID=slave_id;
+//		 if(W_flash.SlaveID!=R_flash.SlaveID){
+//
+//			 Flash_WriteSettings(&W_flash);
+//
 //		 }
 
+//		 slave_id=R_flash.SlaveID;
+
+
+		 PollUartBaudRate();//configure baudrate for mb
 		 if(true==get_adc_conversion_value(adc_conversion_mode));
+		 memcpy(W_flash.channalmode,adc_conversion_mode,8);
+
+
+/*save channal configuration in flash*/
+
+		 //Flash_ReadSettings(&R_flash);
+
+		 if(memcmp(W_flash.channalmode,R_flash.channalmode,8)!=0/*||get_is_configured()==0*/){
+
+			 Flash_WriteSettings(&W_flash);
+			 //clear_is_configured();
+
+		 }
+
+		 Flash_ReadSettings(&R_flash);
+		 memcpy(adc_conversion_mode,R_flash.channalmode,8);
+
+
+
+
+/****************************************/
 		 conversion_mode1=0;
+
+
+
+	     set_adc_conversion_mode(adc_conversion_mode);
+
 		 conversion_mode1=check_and_get_adc_conversion_mode(adc_conversion_mode,channal_0);//check channal configuration mode value and get conversion mode
-		 //raw=ADS1247_ReadData(P_AIN0);
+
 		 double voltageReading=ads1247_raw_to_voltage(8388608, 2.5, 1);
 		 supply[channal_0]=get_supply(voltageReading,conversion_mode1);
 		 conversion_mode=0;

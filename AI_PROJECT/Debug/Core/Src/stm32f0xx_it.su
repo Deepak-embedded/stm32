@@ -1,0 +1,11 @@
+../Core/Src/stm32f0xx_it.c:74:6:NMI_Handler	8	static
+../Core/Src/stm32f0xx_it.c:89:6:HardFault_Handler	8	static
+../Core/Src/stm32f0xx_it.c:104:6:SVC_Handler	8	static
+../Core/Src/stm32f0xx_it.c:117:6:PendSV_Handler	8	static
+../Core/Src/stm32f0xx_it.c:130:6:SysTick_Handler	8	static
+../Core/Src/stm32f0xx_it.c:151:6:RCC_IRQHandler	8	static
+../Core/Src/stm32f0xx_it.c:164:6:EXTI4_15_IRQHandler	8	static
+../Core/Src/stm32f0xx_it.c:179:6:SPI1_IRQHandler	8	static
+../Core/Src/stm32f0xx_it.c:193:6:SPI2_IRQHandler	8	static
+../Core/Src/stm32f0xx_it.c:207:6:USART1_IRQHandler	8	static
+../Core/Src/stm32f0xx_it.c:221:6:USART2_IRQHandler	8	static

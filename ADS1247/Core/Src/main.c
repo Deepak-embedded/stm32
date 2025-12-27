@@ -151,7 +151,7 @@ int main(void)
   MX_GPIO_Init();
   MX_SPI2_Init();
   ADS1247_begin();
-  //analog_supplie_init();
+  analog_supplie_init();
 
 
 

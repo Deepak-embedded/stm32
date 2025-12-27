@@ -1,0 +1,5 @@
+../Core/Src/storage.c:34:6:Flash_Read	2
+../Core/Src/storage.c:42:6:Flash_WriteSettings	4
+../Core/Src/storage.c:78:6:Flash_ReadSettings	1
+../Core/Src/storage.c:89:10:get_is_configured	1
+../Core/Src/storage.c:95:7:set_is_configured	3
