@@ -1,4 +1,0 @@
-../Core/Src/modbus485.c:87:10:crc16	24	static
-../Core/Src/modbus485.c:104:6:sendData	24	static
-../Core/Src/modbus485.c:122:6:readHoldingRegs	16	static
-../Core/Src/modbus485.c:134:6:writeHoldingRegs	24	static

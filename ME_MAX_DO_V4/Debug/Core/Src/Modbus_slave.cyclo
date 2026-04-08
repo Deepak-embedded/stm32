@@ -1,0 +1,6 @@
+../Core/Src/Modbus_slave.c:39:6:sendData1	1
+../Core/Src/Modbus_slave.c:60:6:sendData	1
+../Core/Src/Modbus_slave.c:95:9:writeMultiCoils	8
+../Core/Src/Modbus_slave.c:164:9:readCoils	7
+../Core/Src/Modbus_slave.c:208:9:writeMultiCoils2	8
+../Core/Src/Modbus_slave.c:277:9:readCoils2	7

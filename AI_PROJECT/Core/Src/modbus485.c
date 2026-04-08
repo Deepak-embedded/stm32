@@ -181,7 +181,7 @@ void writeHoldingRegs(TYPE_t datatype,UART_HandleTypeDef *huartx){
 			 startAddr = ((uart2RxData[2]<<8)|uart2RxData[3]);  // start Register Address
 			 numRegs = ((uart2RxData[4]<<8)|uart2RxData[5]);   // number to registers master has requested
 			 TxData[SID] = slave_id;  // slave ID
-			 		TxData[FC] = uart1RxData[1];  // function code
+			 		TxData[FC] = uart2RxData[1];  // function code replacing when cheking modbus tcp
 			 		TxData[TOTAL_BYTE] = numRegs*2;  // Byte count
 			 		indx = DATA_BYTE;  // we need to keep track of how many bytes has been stored in TxData Buffer
 

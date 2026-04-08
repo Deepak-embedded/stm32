@@ -38,6 +38,6 @@ typedef enum{
 
 
 
-
+void input_high(uint8_t  bit );
 
 #endif /* INC_HC595_H_ */

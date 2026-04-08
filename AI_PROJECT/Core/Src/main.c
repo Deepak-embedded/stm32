@@ -1,4 +1,4 @@
-/*ODE BEGIN Header */
+/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
   * @file           : main.c
@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2025 STMicroelectronics.
+  * Copyright (c) 2026 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -18,11 +18,9 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
-#include"string.h"
+#include"storage.h"
 #include <stdbool.h>
-#include<HC595.h>
-#include<storage.h>
+#include<string.h>
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 uint8_t uart1RxData[UART_RX_BUF_SIZE];
@@ -33,10 +31,9 @@ uint8_t slave_id=0x01;
 uint32_t selectedBaudRate=9600;
 uint8_t uart2_rx_byte;
 uint8_t uart1_rx_byte;
-static uint16_t uart1rxcount=0;
-static uint16_t uart2rxcount=0;
+uint16_t uart1rxcount=0;//todo make static
+uint16_t uart2rxcount=0;//todo make static
 uint8_t adc_conversion_mode[8]={4,4,4,4,4,4,4,4};//V0_10
-static int cmd_cnt=0;
 int32_t raw1,raw2,raw3;
 uint8_t status;
 float voltageReading0,voltageReading2,result_temp=0.0;
@@ -74,6 +71,9 @@ flash_t R_flash={.channalmode={4,4,4,4,4,4,4,4},
 uint32_t Holding_Registers_Database[100]={0};
 RingBuffer_t uart2_rx_rb = { .head = 0, .tail = 0 };
 RingBuffer_t uart1_rx_rb = { .head = 0, .tail = 0 };
+
+uint8_t reglen;
+uint8_t tx_[MIN_CMD_LEN];
 
 /* USER CODE END Includes */
 
@@ -157,6 +157,8 @@ void PollUartBaudRate(void)
 	}
 }
 
+
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -183,10 +185,11 @@ eMode_t check_and_get_adc_conversion_mode(uint8_t *conversion_mode,channal_t cha
 
 
 
-uint16_t enbit=0;
-void set_adc_conversion_mode(uint8_t *conversion_mode){
 
-	for(uint8_t channal=0;channal<8;channal++){
+uint16_t enbit=0;
+void set_adc_conversion_mode(uint8_t *conversion_mode,uint8_t channal){
+
+	//for(uint8_t channal=0;channal<8;channal++){
 		for(int i=0;i<sizeof(configMap)/sizeof(MapEntry);i++){
 					if(configMap[i].regValue==conversion_mode[channal]){
 						switch(configMap[i].config){
@@ -218,10 +221,10 @@ void set_adc_conversion_mode(uint8_t *conversion_mode){
 					}
 
 			}
-	}
+
+	//}
 	input_high(enbit);
 }
-
 
 
 
@@ -360,15 +363,21 @@ bool read_single_reg(UART_HandleTypeDef *uartx){
 				HAL_GPIO_WritePin(LED6_GPIO_Port, LED6_Pin, SET);
 				all_set|=(1<<5);
 			}
-			else if(uart1RxData[3]==27)all_set|=(1<<6);
-			else if(uart1RxData[3]==28)all_set|=(1<<7);
+			else if(uart1RxData[3]==27){
+				HAL_GPIO_WritePin(LED8_GPIO_Port, LED8_Pin, SET);
+
+				all_set|=(1<<6);
+			}
+			else if(uart1RxData[3]==28){
+				HAL_GPIO_WritePin(LED7_GPIO_Port, LED7_Pin, SET);
+				all_set|=(1<<7);
+			}
 			if(uart1RxData[5]<8&&all_set==0xFF)set_is_configured();
 	    }
 
 	}
 	else if(uartx->Instance==USART2){
-	    if(uart2len < 8)
-	        return false;
+	    if(uart2len < 8)return false;
 
 	    // Extract CRC from last two bytes
 	    uint16_t crc_recv = (uart2RxData[uart2len-1]<<8)|uart2RxData[uart2len-2];
@@ -378,7 +387,6 @@ bool read_single_reg(UART_HandleTypeDef *uartx){
 	    if(uart2RxData[0] != slave_id)    return false;
 	    if(uart2RxData[1] != 0x06) return false;//function code
 	    if(crc_recv != crc_calc)     return false;
-
 	    uint8_t tx[8]={0};
 
 	    tx[0]=uart2RxData[0];
@@ -387,17 +395,46 @@ bool read_single_reg(UART_HandleTypeDef *uartx){
 	    tx[3]=uart2RxData[3];
 	    tx[4]=uart2RxData[4];
 	    tx[5]=uart2RxData[5];
-
 	    sendData(tx,6,uartx);
-	    if(uart2RxData[3]>20&&uart2RxData[3]<=28)
-	    	adc_conversion_mode[uart2RxData[3]-21] = uart2RxData[5];
-	    	if(uart2RxData[3]==21)HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, SET);
-	    	else if(uart2RxData[3]==22)HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, SET);
-	    	else if(uart2RxData[3]==23)HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, SET);
-	    	else if(uart2RxData[3]==24)HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin, SET);
-	    	else if(uart2RxData[3]==25)HAL_GPIO_WritePin(LED5_GPIO_Port, LED5_Pin, SET);
-	    	else if(uart2RxData[3]==26)HAL_GPIO_WritePin(LED6_GPIO_Port, LED6_Pin, SET);
-	    	if(uart1RxData[5]<8)set_is_configured();
+
+	    if(uart2RxData[3]>20&&uart2RxData[3]<=28){
+			static uint8_t all_set=0;
+			adc_conversion_mode[uart2RxData[3]-21] = uart2RxData[5];
+			if(uart2RxData[3]==21){
+				HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, SET);
+				all_set|=(1<<0);
+			}
+			else if(uart2RxData[3]==22){
+				HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, SET);
+				all_set|=(1<<1);
+			}
+			else if(uart2RxData[3]==23){
+				HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, SET);
+				all_set|=(1<<2);
+			}
+			else if(uart2RxData[3]==24){
+				HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin, SET);
+				all_set|=(1<<3);
+			}
+			else if(uart2RxData[3]==25){
+				HAL_GPIO_WritePin(LED5_GPIO_Port, LED5_Pin, SET);
+				all_set|=(1<<4);
+			}
+			else if(uart2RxData[3]==26){
+				HAL_GPIO_WritePin(LED6_GPIO_Port, LED6_Pin, SET);
+				all_set|=(1<<5);
+			}
+			else if(uart2RxData[3]==27){
+				HAL_GPIO_WritePin(LED8_GPIO_Port, LED8_Pin, SET);
+
+				all_set|=(1<<6);
+			}
+			else if(uart2RxData[3]==28){
+				HAL_GPIO_WritePin(LED7_GPIO_Port, LED7_Pin, SET);
+				all_set|=(1<<7);
+			}
+			if(uart2RxData[5]<8&&all_set==0xFF)set_is_configured();
+		}
 	}
 	    return true;
 }
@@ -486,12 +523,11 @@ void ads_main(){
 
 
 }
-
 int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-	uint8_t buf_A=0;
+
 	int32_t sum=0;
   /* USER CODE END 1 */
 
@@ -529,6 +565,7 @@ int main(void)
   latch_configB_B();
 
   CS_HIGH;//asd1247 cs
+
   ADS1247_begin();
 
     if(get_is_configured()==SET){
@@ -538,22 +575,22 @@ int main(void)
 		HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin, SET);
 		HAL_GPIO_WritePin(LED5_GPIO_Port, LED5_Pin, SET);
 		HAL_GPIO_WritePin(LED6_GPIO_Port, LED6_Pin, SET);
+		HAL_GPIO_WritePin(LED7_GPIO_Port, LED7_Pin, SET);
+		HAL_GPIO_WritePin(LED8_GPIO_Port, LED8_Pin, SET);
+//
     }
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  /* USER CODE BEGIN WHILE */
- 	while(1){
- //		 uint8_t len=0;
+	while(1){
+ 		 uint8_t len=0;
 
  		 slave_id=GPIO_readA_B();
- 		 //slave_id = buf_A;
+
  		 W_flash.SlaveID=slave_id;
- //
- //		 if(W_flash.SlaveID!=R_flash.SlaveID){
- //			 Flash_WriteSettings(&W_flash);
- //		 }
+
+
 
 
 
@@ -564,6 +601,7 @@ int main(void)
 
  		 if(true==get_adc_conversion_value(adc_conversion_mode,&huart1));
  		 if(true==get_adc_conversion_value(adc_conversion_mode,&huart2));
+
 
 
 
@@ -581,26 +619,26 @@ int main(void)
  //			 set_is_configured();
  		 }
  		 Flash_ReadSettings(&R_flash);
- 		 memcpy(adc_conversion_mode,R_flash.channalmode,8);
+ 		// memcpy(adc_conversion_mode,R_flash.channalmode,8);
 
 
 
 
  		channal=0;
-		for(int i=0;i<7;i++){
-
+		for(int i=0;i<1;i++){
 			ADS1247_write_register(REG_MUX0,1,((channal>>1)|N_AIN7));
 			sum=0;
-			set_adc_conversion_mode(adc_conversion_mode);
+			set_adc_conversion_mode(adc_conversion_mode[i],i);
+//			HAL_Delay(400);
 			conversion_mode1=check_and_get_adc_conversion_mode(adc_conversion_mode,channal_0+i);//check channal configuration mode value and get conversion mode
+
 				if (HAL_GPIO_ReadPin(DRDY_PORT, DRDY_PIN) == GPIO_PIN_RESET){
 					for(int i=0;i<ICNT;i++){
 					 raw1=ADS1247_ReadData(P_AIN0);
-					 sum += raw1;
+					 //sum += raw1;
 					}
 				}
-			raw1=sum/ICNT;
-			voltageReading0=ads1247_raw_to_voltage(raw1, 2.5, 1);
+			voltageReading0=ads1247_raw_to_voltage(raw1, 2.501, 1);
 			supply[channal_0+i]=get_supply(voltageReading0,conversion_mode1);
 			 uart1crc=(uart1RxData[CRC_HIGH]<<8)|uart1RxData[CRC_LOW];
 			 uart2crc=(uart2RxData[CRC_HIGH]<<8)|uart2RxData[CRC_LOW];
@@ -619,7 +657,7 @@ int main(void)
 
 
 				 writeHoldingRegs(UINT32_T,&huart1);
-//				 cmd_cnt++;
+////				 cmd_cnt++;
 				 memset(uart1RxData,0,sizeof(uart1RxData));
 
 			}
@@ -639,18 +677,16 @@ int main(void)
 
 				 memset(uart2RxData,0,sizeof(uart2RxData));
 			}
-//			else if((uart1RxData[0]==slave_id)&&(uart1RxData[1]==0x06)){
-//				read_single_reg(&huart1)?(status =true ):(status =false);
-//			}
-			channal+=16;
+			else if((uart1RxData[0]==slave_id)&&(uart1RxData[1]==0x06)){
+				read_single_reg(&huart1)?(status =true ):(status =false);
+			}
 		}
 
 /*******************************************************************************************************************/
  	}
-
-
   /* USER CODE END 3 */
 }
+
 /**
   * @brief System Clock Configuration
   * @retval None
@@ -669,7 +705,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL12;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL8;
   RCC_OscInitStruct.PLL.PREDIV = RCC_PREDIV_DIV1;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
@@ -719,7 +755,7 @@ static void MX_SPI1_Init(void)
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_2EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -792,7 +828,7 @@ static void MX_USART1_UART_Init(void)
 
   /* USER CODE END USART1_Init 1 */
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 38400;
+  huart1.Init.BaudRate = 9600;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;
@@ -866,30 +902,40 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, LED6_Pin|LED5_Pin|LED4_Pin|LED3_Pin
-                          |LED2_Pin|CTRL0_Pin, GPIO_PIN_RESET);
+                          |LED2_Pin|GPIO_PIN_6|CTRL0_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, LED1_Pin|ADC_CS1_Pin|CTRL2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, LED1_Pin|LED8_Pin|ADC_CS1_Pin|CTRL2_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(LED7_GPIO_Port, LED7_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, MCP_CS2_Pin|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5
                           |ADS_RESET_Pin|MCP_RST1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : LED6_Pin LED5_Pin LED4_Pin LED3_Pin
-                           LED2_Pin CTRL0_Pin */
+                           LED2_Pin PC6 CTRL0_Pin */
   GPIO_InitStruct.Pin = LED6_Pin|LED5_Pin|LED4_Pin|LED3_Pin
-                          |LED2_Pin|CTRL0_Pin;
+                          |LED2_Pin|GPIO_PIN_6|CTRL0_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : LED1_Pin ADC_CS1_Pin CTRL2_Pin */
-  GPIO_InitStruct.Pin = LED1_Pin|ADC_CS1_Pin|CTRL2_Pin;
+  /*Configure GPIO pins : LED1_Pin LED8_Pin ADC_CS1_Pin CTRL2_Pin */
+  GPIO_InitStruct.Pin = LED1_Pin|LED8_Pin|ADC_CS1_Pin|CTRL2_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : LED7_Pin */
+  GPIO_InitStruct.Pin = LED7_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(LED7_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : MCP_CS2_Pin PB3 PB4 PB5
                            ADS_RESET_Pin MCP_RST1_Pin */
