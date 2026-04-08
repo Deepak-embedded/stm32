@@ -1,0 +1,4 @@
+../Core/Src/COM_PORT_RS232_1.c:113:6:StartCOM_PORT_RS232_1Task	57
+../Core/Src/COM_PORT_RS232_1.c:47:6:MX_USART1_UART_Init	5
+../Core/Src/COM_PORT_RS232_1.c:98:6:COM_PORT_RS232_1_start	1
+../Core/Src/COM_PORT_RS232_1.c:485:6:Print_Memory_RTOS_Stack	1

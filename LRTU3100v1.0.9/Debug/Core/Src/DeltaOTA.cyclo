@@ -1,0 +1,13 @@
+../Core/Inc/janpatch.h:57:15:jp_fread	1
+../Core/Inc/janpatch.h:70:15:jp_fwrite	1
+../Core/Inc/janpatch.h:83:12:jp_fseek	3
+../Core/Inc/janpatch.h:129:12:jp_putc	5
+../Core/Inc/janpatch.h:102:12:jp_getc	4
+../Core/Inc/janpatch.h:189:13:process_mod	9
+../Core/Inc/janpatch.h:164:13:jp_final_flush	4
+../Core/Inc/janpatch.h:250:12:find_length	5
+../Core/Src/DeltaOTA.c:77:5:exFlash_seek	4
+../Core/Src/DeltaOTA.c:30:8:exFlash_read	3
+../Core/Src/DeltaOTA.c:45:8:exFlash_write	7
+../Core/Inc/janpatch.h:280:5:janpatch	19
+../Core/Src/DeltaOTA.c:97:6:copyTargetToSource	4

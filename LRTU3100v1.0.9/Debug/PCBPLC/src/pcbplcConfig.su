@@ -1,0 +1,2 @@
+../PCBPLC/src/pcbplcConfig.c:11:6:pcbplc_config_log	0	static
+../PCBPLC/src/pcbplcConfig.c:122:6:pcbplc_default_configuration	8	static

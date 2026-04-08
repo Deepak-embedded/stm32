@@ -1,0 +1,14 @@
+../Core/Src/ADC.c:39:6:MX_ADC1_Init	24	static
+../Core/Src/ADC.c:84:6:ADC_start	40	static
+../Core/Src/ADC.c:153:6:ADC1_Select_CH3	40	static
+../Core/Src/ADC.c:178:6:ADC1_Select_CH5	40	static
+../Core/Src/ADC.c:203:6:ADC1_Select_CH7	40	static
+../Core/Src/ADC.c:228:6:ADC1_Select_CH4	40	static
+../Core/Src/ADC.c:253:6:ADC1_Select_CH18	40	static
+../Core/Src/ADC.c:278:6:ADC1_Select_CH19	40	static
+../Core/Src/ADC.c:328:6:ADC1_calibration	8	static
+../Core/Src/ADC.c:423:6:ADC_calculation	0	static
+../Core/Src/ADC.c:689:6:Adc_ConvertBin2Engg	8	static
+../Core/Src/ADC.c:303:6:Get_ADC_Value	16	static
+../Core/Src/ADC.c:387:6:ADC1_calibration_CH	16	static
+../Core/Src/ADC.c:99:6:StartADCTask	40	static

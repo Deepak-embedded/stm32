@@ -1,0 +1,13 @@
+../Core/Src/EC200U.c:90:6:MX_USART2_UART_Init	5
+../Core/Src/EC200U.c:140:6:EC200U_start	1
+../Core/Src/EC200U.c:316:10:AT_Serial_Send_fn	1
+../Core/Src/EC200U.c:1875:6:lwgsmi_send_ip_mac	12
+../Core/Src/EC200U.c:1921:6:lwgsmi_send_string	9
+../Core/Src/EC200U.c:1950:6:lwgsmi_send_number	4
+../Core/Src/EC200U.c:1027:10:lwgsmi_initiate_cmd	46
+../Core/Src/EC200U.c:333:15:EC200U_modem_reboot	3
+../Core/Src/EC200U.c:373:15:EC200U_Modeminfo	5
+../Core/Src/EC200U.c:446:10:EC200U_make_internetConnection	31
+../Core/Src/EC200U.c:739:10:EC200U_networkCheck	27
+../Core/Src/EC200U.c:155:6:StartEC200UTask	20
+../Core/Src/EC200U.c:1987:6:lwgsmi_send_signed_number	4

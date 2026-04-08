@@ -1,0 +1,7 @@
+../Core/Src/modbus485.c:92:10:crc16	24	static
+../Core/Src/modbus485.c:109:6:sendData	32	static
+../Core/Src/modbus485.c:140:9:get_modbus_regs_range	32	static
+../Core/Src/modbus485.c:199:6:Read_Input_Regs	24	static
+../Core/Src/modbus485.c:293:6:Read_Holding_Regs	24	static
+../Core/Src/modbus485.c:388:6:Write_Holding_Regs	40	static
+../Core/Src/modbus485.c:554:6:modbusException	16	static

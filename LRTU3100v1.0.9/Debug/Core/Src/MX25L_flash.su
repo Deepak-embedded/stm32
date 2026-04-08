@@ -1,0 +1,12 @@
+../Core/Src/MX25L_flash.c:30:13:MX25L_WriteEnable_QPI	64	static
+../Core/Src/MX25L_flash.c:76:9:MX25L_ReadStatusReg_QPI	72	static
+../Core/Src/MX25L_flash.c:121:9:MX25L_ReadConfigReg_QPI	72	static
+../Core/Src/MX25L_flash.c:144:13:MX25L_IsBusy	8	static
+../Core/Src/MX25L_flash.c:152:6:MX25L_WaitForWriteEnd	8	static
+../Core/Src/MX25L_flash.c:161:13:MX25L_EraseSector_QPI	72	static
+../Core/Src/MX25L_flash.c:197:13:MX25L_PageProgram_QPI	80	static
+../Core/Src/MX25L_flash.c:278:13:MX25L_ReadID_QPI	64	static
+../Core/Src/MX25L_flash.c:309:6:MX25L_EnableQPI	168	static
+../Core/Src/MX25L_flash.c:331:13:MX25L_Erase_Write_One_Sector	32	static
+../Core/Src/MX25L_flash.c:379:13:MX25L_Init	120	static
+../Core/Src/MX25L_flash.c:408:19:MX25L_ReadRaw	72	static

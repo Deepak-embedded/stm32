@@ -1,0 +1,16 @@
+../Drivers/BSP/Components/lan8742/lan8742.c:63:10:LAN8742_RegisterBusIO	5
+../Drivers/BSP/Components/lan8742/lan8742.c:304:9:LAN8742_DeInit	4
+../Drivers/BSP/Components/lan8742/lan8742.c:329:9:LAN8742_DisablePowerDownMode	3
+../Drivers/BSP/Components/lan8742/lan8742.c:359:9:LAN8742_EnablePowerDownMode	3
+../Drivers/BSP/Components/lan8742/lan8742.c:389:9:LAN8742_StartAutoNego	3
+../Drivers/BSP/Components/lan8742/lan8742.c:91:10:LAN8742_Init	25
+../Drivers/BSP/Components/lan8742/lan8742.c:419:9:LAN8742_SetSlave	3
+../Drivers/BSP/Components/lan8742/lan8742.c:449:9:LAN8742_SetMaster	3
+../Drivers/BSP/Components/lan8742/lan8742.c:485:9:LAN8742_GetLinkState	14
+../Drivers/BSP/Components/lan8742/lan8742.c:577:9:LAN8742_SetLinkState	6
+../Drivers/BSP/Components/lan8742/lan8742.c:629:9:LAN8742_EnableLoopbackMode	3
+../Drivers/BSP/Components/lan8742/lan8742.c:659:9:LAN8742_DisableLoopbackMode	3
+../Drivers/BSP/Components/lan8742/lan8742.c:699:9:LAN8742_EnableIT	3
+../Drivers/BSP/Components/lan8742/lan8742.c:739:9:LAN8742_DisableIT	3
+../Drivers/BSP/Components/lan8742/lan8742.c:778:10:LAN8742_ClearIT	2
+../Drivers/BSP/Components/lan8742/lan8742.c:808:9:LAN8742_GetITStatus	2

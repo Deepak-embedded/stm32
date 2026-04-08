@@ -1,0 +1,13 @@
+../Core/Src/Lcd_16x2.c:43:6:Backlight_On	1
+../Core/Src/Lcd_16x2.c:52:6:Backlight_Off	1
+../Core/Src/Lcd_16x2.c:20:6:Backlight_Init	1
+../Core/Src/Lcd_16x2.c:92:6:Backlight_Timer_Callback	1
+../Core/Src/Lcd_16x2.c:61:6:Backlight_Button_Pressed	6
+../Core/Src/Lcd_16x2.c:102:9:Backlight_Get_State	1
+../Core/Src/Lcd_16x2.c:110:6:lcd_write_command	1
+../Core/Src/Lcd_16x2.c:122:6:lcd_write_data	1
+../Core/Src/Lcd_16x2.c:133:6:lcd_display_string	2
+../Core/Src/Lcd_16x2.c:140:6:lcd_clear	1
+../Core/Src/Lcd_16x2.c:146:6:lcd_initialize	2
+../Core/Src/Lcd_16x2.c:175:6:lcd_set_cursor	3
+../Core/Src/Lcd_16x2.c:193:6:lcd_float_print	1

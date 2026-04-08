@@ -1,0 +1,4 @@
+../Core/Src/modem_GPS.c:30:6:check_GPS_data	8	static
+../Core/Src/modem_GPS.c:81:9:is_leap_year	0	static
+../Core/Src/modem_GPS.c:86:6:UTC_To_Local	16	static
+../Core/Src/modem_GPS.c:149:6:Check_And_Sync_RTC	32	static

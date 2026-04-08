@@ -1,0 +1,13 @@
+../Core/Src/dipswitch.c:9:6:csLOW_B	1
+../Core/Src/dipswitch.c:15:6:csHIGH_B	1
+../Core/Src/dipswitch.c:20:6:RST_HIGH_B	1
+../Core/Src/dipswitch.c:25:6:SPI_Write_B	1
+../Core/Src/dipswitch.c:30:6:SPI_Read_B	1
+../Core/Src/dipswitch.c:37:6:enable_MCPA_B	1
+../Core/Src/dipswitch.c:50:6:enable_MCPB_B	1
+../Core/Src/dipswitch.c:62:6:port_configB_B	1
+../Core/Src/dipswitch.c:74:6:port_configA_B	1
+../Core/Src/dipswitch.c:87:6:polarity_configB_B	1
+../Core/Src/dipswitch.c:99:6:latch_configA_B	1
+../Core/Src/dipswitch.c:112:6:latch_configB_B	1
+../Core/Src/dipswitch.c:126:9:GPIO_readA_B	1

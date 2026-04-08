@@ -1,0 +1,15 @@
+../Core/Src/json_parser.c:87:6:Parse_IP_Address	4	static
+../Core/Src/json_parser.c:2583:21:Config_response_ACK_JSON_frame	40	static
+../Core/Src/json_parser.c:108:21:parse_JSON_frame	160	static
+../Core/Src/json_parser.c:2691:21:response_ACK_JSON_frame	32	static
+../Core/Src/json_parser.c:2806:15:buildLograteDataJson	296	static
+../Core/Src/json_parser.c:2872:15:buildGetScheduleJson	48	static
+../Core/Src/json_parser.c:2934:15:buildGetModeResponseJson	24	static
+../Core/Src/json_parser.c:3004:15:buildProIdFrameJson	144	static
+../Core/Src/json_parser.c:3115:15:buildProIdFrameJson_Modem	16	static
+../Core/Src/json_parser.c:3193:15:buildTestMethodAckJson	24	static
+../Core/Src/json_parser.c:3257:15:buildTestMethodAckJson_BAT	24	static
+../Core/Src/json_parser.c:3355:15:buildTestMethodResultJson	264	static
+../Core/Src/json_parser.c:3503:15:buildTestMethodResultJson_Modem	16	static
+../Core/Src/json_parser.c:3695:15:buildAICaliJson	24	static
+../Core/Src/json_parser.c:3841:15:HistoryFrameParser	8	static

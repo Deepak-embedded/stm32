@@ -1,0 +1,9 @@
+../PCBPLC/src/pcbplcInterface.c:28:6:set_do_on	1
+../PCBPLC/src/pcbplcInterface.c:53:6:set_do_off	1
+../PCBPLC/src/pcbplcInterface.c:77:6:get_di_status	7
+../PCBPLC/src/pcbplcInterface.c:184:6:get_ai_status	2
+../PCBPLC/src/pcbplcInterface.c:211:6:set_ao	1
+../PCBPLC/src/pcbplcInterface.c:240:6:set_pulse_do_polarity	4
+../PCBPLC/src/pcbplcInterface.c:301:6:set_dual_Do	6
+../PCBPLC/src/pcbplcInterface.c:370:6:set_do	5
+../PCBPLC/src/pcbplcInterface.c:418:6:get_rs485_parameters	3

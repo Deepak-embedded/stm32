@@ -1,0 +1,7 @@
+../Core/Src/OTA.c:412:21:response_ACK_OTA_JSON_frame	14
+../Core/Src/OTA.c:514:21:response_ACK_JSON_frame1	12
+../Core/Src/OTA.c:601:15:verify_OTA_CRC	4
+../Core/Src/OTA.c:631:15:convert_OTA_HextoAsciiString	5
+../Core/Src/OTA.c:43:6:Ota_File_write_ack	55
+../Core/Src/OTA.c:661:6:OTA_HexChartoHexByte	4
+../Core/Src/OTA.c:675:21:LOta_Status_ack	18

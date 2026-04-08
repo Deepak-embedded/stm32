@@ -1,0 +1,14 @@
+../Core/Src/main.c:122:13:CPU_CACHE_Enable	4	static,ignoring_inline_asm
+../Core/Src/main.c:418:6:MPU_Config	32	static
+../Core/Src/main.c:647:13:MX_GPIO_Init	80	static
+../Core/Src/main.c:901:6:StartDefaultTask	8	static
+../Core/Src/main.c:768:8:GPIO_Unused_Define_Low	40	static
+../Core/Src/main.c:795:8:MODEM_GPIO_Define	48	static
+../Core/Src/main.c:875:6:reboot_device_func	8	static
+../Core/Src/main.c:931:6:HAL_TIM_PeriodElapsedCallback	8	static
+../Core/Src/main.c:961:6:Error_Handler	0	static,ignoring_inline_asm
+../Core/Src/main.c:612:13:MX_QUADSPI_Init	8	static
+../Core/Src/main.c:533:13:MX_CRC_Init	8	static
+../Core/Src/main.c:468:6:SystemClock_Config	120	static
+../Core/Src/main.c:564:6:MX_I2C1_Init	8	static
+../Core/Src/main.c:135:5:main	72	static,ignoring_inline_asm

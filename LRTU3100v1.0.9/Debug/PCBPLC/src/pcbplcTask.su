@@ -1,0 +1,2 @@
+../PCBPLC/src/pcbplcTask.c:45:6:StartpcbplcTask	8	static
+../PCBPLC/src/pcbplcTask.c:30:6:pcbplc_start	40	static

@@ -1,0 +1,7 @@
+../Core/Src/modbus485.c:92:10:crc16	2
+../Core/Src/modbus485.c:109:6:sendData	3
+../Core/Src/modbus485.c:140:9:get_modbus_regs_range	10
+../Core/Src/modbus485.c:199:6:Read_Input_Regs	15
+../Core/Src/modbus485.c:293:6:Read_Holding_Regs	15
+../Core/Src/modbus485.c:388:6:Write_Holding_Regs	43
+../Core/Src/modbus485.c:554:6:modbusException	3
