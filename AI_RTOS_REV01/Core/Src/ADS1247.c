@@ -225,6 +225,7 @@ void ADS1247_begin(void){
 	  HAL_SPI_Transmit(&hspi1, &cmd, 1, 2000);
 	  HAL_Delay(10);
 	  CS_HIGH;
+	  HAL_Delay(500);
 //	  ADS1247_write_register(REG_VBIAS,1,EN_BIAS_AIN0 | EN_BIAS_AIN1);
 
 //	adc124xx_t ads={
@@ -489,30 +490,34 @@ float get_supply(float voltageReading, eMode_t conversion_mode){
 
 	case V0_5 :
 		retVal=retVal+0.015f;
-		if(retVal>1.25f){
-			retVal=5.0f;//todo undefine behavior have to set
-		}
-		else if(retVal<0.0f){
-			retVal=0.0f;//todo undefine behavior have to set
-		}
-		else{
-			retVal=retVal*4.0f;
-		}
-
+//		if(retVal>1.25f){
+//
+//			//retVal=5.0f;//todo undefine behavior have to set
+//		}
+//		else if(retVal<0.0f){
+//
+//			//retVal=0.0f;//todo undefine behavior have to set
+//		}
+//		else{
+//			retVal=retVal*4.0f;
+//		}
+		retVal=retVal*4.0f;
 		break;
 
 	case V0_10 :
 		//retVal=retVal+0.01;
 		if(retVal>2.5f){
-			retVal=10.0f;//todo undefine behavior have to set
+
+			//retVal=10.0f;//todo undefine behavior have to set
 			//retVal=retVal*4.0f;
 		}
 		else if(retVal<0.0f){
-			retVal=0.0f;//todo undefine behavior have to set
+
+			//retVal=0.0f;//todo undefine behavior have to set
 		}
 		else{
 			retVal=retVal*4.0f;
-			retVal=retVal+0.025;
+
 		}
 
 
@@ -521,33 +526,33 @@ float get_supply(float voltageReading, eMode_t conversion_mode){
 		        //voltageReading+=0.002f;
 				voltageReading=(voltageReading+0.0002f);
 				retVal = (voltageReading)* 1000.0f;
-				if(retVal>50.0f) retVal=50.0f;//todo undefine behavior have to set
-				if(retVal<0.0f)   retVal=0.0f;//todo undefine behavior have to set
+				//if(retVal>50.0f) retVal=50.0f;//todo undefine behavior have to set
+				//if(retVal<0.0f)   retVal=0.0f;//todo undefine behavior have to set
 
 		break;
 
 
 	case MV0_100 :
-		voltageReading=(voltageReading+0.0002f);
+		voltageReading=(voltageReading+0.0003f);
 		retVal = voltageReading * 1000.0f;
-		if(retVal>100.0f) retVal=100.0f;//todo undefine behavior have to set
-		if(retVal<0.0f)   retVal=0.0f;//todo undefine behavior have to set
+		//if(retVal>100.0f) retVal=100.0f;//todo undefine behavior have to set
+		//if(retVal<0.0f)   retVal=0.0f;//todo undefine behavior have to set
 
 		break;
 
 	case MV0_250:
-		voltageReading=(voltageReading+0.0002f);
+		voltageReading=(voltageReading+0.0005f);
 		retVal = voltageReading * 1000.0f;
-		if(retVal>250.0f) retVal=250.0f;//todo undefine behavior have to set
-		if(retVal<0.0f)   retVal=0.0f;//todo undefine behavior have to set
+		//if(retVal>250.0f) retVal=250.0f;//todo undefine behavior have to set
+		//if(retVal<0.0f)   retVal=0.0f;//todo undefine behavior have to set
 
 		break;
 
 	case MA0_20:
 
 		retVal=((voltageReading*1000.0f)/50.0f);//50ohm resistance and  1000 for mv
-        if (retVal > 20.0f) retVal = 20.0f;//todo undefine behavior have to set
-        else if (retVal < 0.0f)  retVal = 0.0f;//todo undefine behavior have to set
+        //if (retVal > 20.0f) retVal = 20.0f;//todo undefine behavior have to set
+        //else if (retVal < 0.0f)  retVal = 0.0f;//todo undefine behavior have to set
 
 
 		break;
@@ -557,12 +562,12 @@ float get_supply(float voltageReading, eMode_t conversion_mode){
 		retVal=(voltageReading*1000.0f/50.0f);//200ohm resistance and 4 scale 1000 for mv
 
 //		retVal=(voltageReading*1000.0f/250.0f)*4;//200ohm resistance and 4 scale 1000 for mv
-        if (retVal > 20.0f) retVal = 20.0f;//todo undefine behavior have to set
-        else if (retVal < 4.0f)  retVal = 4.0f;//todo undefine behavior have to set
+        //if (retVal > 20.0f) retVal = 20.0f;//todo undefine behavior have to set
+        //else if (retVal < 4.0f)  retVal = 4.0f;//todo undefine behavior have to set
 
 		break;
 
-	case V0_N10 :
+	case VN5_5 :
 //		if(retVal>0){
 //			retVal=0.0f;//todo undefine behavior have to set
 //		}
@@ -573,15 +578,15 @@ float get_supply(float voltageReading, eMode_t conversion_mode){
 			retVal=retVal*4.0f;
 //		}
 			break;
-	case VN10_N50:
-				if(retVal>50.0f){
-					retVal=50.0f;//todo undefine behavior have to set
+	case VN10_10:
+				if(retVal>10.0f){
+					//retVal=10.0f;//todo undefine behavior have to set
 				}
 				else if(retVal<-10.0f){
-					retVal=-10.0f;//todo undefine behavior have to set
+					//retVal=-10.0f;//todo undefine behavior have to set
 				}
 				else{
-					retVal=retVal*1000.0f;
+					retVal=retVal*4.0f;
 				}
 			break;
 

@@ -71,8 +71,8 @@ const MapEntry configMap[] = {
     {4, V0_10},
     {5,MA4_20},
 	{6,MA0_20},
-	{7,VN10_N50},
-	{8,V0_N10},
+	{7,VN10_10},
+	{8,VN5_5},
 };
 //Reg=((v/100)*22000)-2000
 float voltage_x[50];
@@ -434,7 +434,7 @@ uint8_t set_adc_conversion_mode(uint16_t conversion_mode,uint8_t channel){
 									GAIN=1;
 									ADS1247_write_register(REG_SYS0,1,PGA2_0 | DOR3_20);
 									ADS1247_write_register(REG_MUX0,1,((P_AIN0>>1)|N_AIN3));//enable AI1
-
+									//ADS1247_write_register(REG_VBIAS,1,EN_BIAS_AIN0);
 								}
 								ENABLE_CHANNEL(channel);
 
@@ -456,7 +456,7 @@ uint8_t set_adc_conversion_mode(uint16_t conversion_mode,uint8_t channel){
 
 								break;
 
-							case V0_N10 :
+							case VN5_5 :
 								if(!(enbit&0x01)){
 									HAL_GPIO_WritePin(MUX_EN2_GPIO_Port, MUX_EN2_Pin, RESET);
 									HAL_GPIO_WritePin(MUX_EN1_GPIO_Port, MUX_EN1_Pin, SET);
@@ -469,7 +469,7 @@ uint8_t set_adc_conversion_mode(uint16_t conversion_mode,uint8_t channel){
 								ENABLE_CHANNEL(channel);
 								break;
 
-							case VN10_N50 :
+							case VN10_10 :
 								if(!(enbit&0x02)){
 									HAL_GPIO_WritePin(MUX_EN2_GPIO_Port, MUX_EN2_Pin, SET);
 									HAL_GPIO_WritePin(MUX_EN1_GPIO_Port, MUX_EN1_Pin, RESET);
@@ -477,11 +477,11 @@ uint8_t set_adc_conversion_mode(uint16_t conversion_mode,uint8_t channel){
 									enbit &=~(1<<0);//disable divider  mux
 									GAIN=1;
 									ADS1247_write_register(REG_SYS0,1,PGA2_0 | DOR3_20);
-									ADS1247_write_register(REG_MUX0,1,((P_AIN0>>1)|N_AIN3));//enable AI1
+									ADS1247_write_register(REG_MUX0,1,((P_AIN1>>1)|N_AIN3));//enable AI1
 
 								}
 								ENABLE_CHANNEL(channel);
-
+								break;
 						}
 
 					}
@@ -985,7 +985,7 @@ void StartDefaultTask(void const * argument)
 		channal=0;
 		for(int i=0;i<8;i++){
 			set_adc_conversion_mode(adc_conversion_mode[i],i);
-			HAL_Delay(130);
+			osDelay(130);
 			conversion_mode1=check_and_get_adc_conversion_mode((uint16_t*)adc_conversion_mode,channal_0+i);//check channal configuration mode value and get conversion mode
 
 				if (HAL_GPIO_ReadPin(DRDY_PORT, DRDY_PIN) == GPIO_PIN_RESET){
@@ -993,7 +993,7 @@ void StartDefaultTask(void const * argument)
 					 raw1=ADS1247_ReadData(P_AIN0);
 					}
 				}
-			voltageReading0=ads1247_raw_to_voltage(raw1, 5.001, GAIN);
+			voltageReading0=ads1247_raw_to_voltage(raw1, 4.98, GAIN);
 			supply[channal_0+i]=get_supply(voltageReading0,conversion_mode1);
 
 			voltage_x[i]=supply[channal_0+i];

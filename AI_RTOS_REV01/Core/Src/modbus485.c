@@ -11,7 +11,7 @@
 #include "string.h"
 #include "main.h"
 #include "modbus485.h"
-
+#include <math.h>
 
 #include<stdbool.h>
 #include "cmsis_os.h"
@@ -145,48 +145,138 @@ int16_t get_modbus_regs_range(float voltage_x,eMode_t conversion_mode,uint8_t ch
 	switch(conversion_mode){
 
 	case V0_5 :
-		voltage_x = ((int)(voltage_x * 100))/100.0;
-		retval=MODBUS_REGS(voltage_x,5.0,MB_Zero_offset[channel],MB_Span_offset[channel]);
+		voltage_x = ((int)(voltage_x * 10))/10.0;
+		if(voltage_x<0){
+			retval=32700;
+			//under voltage
+		}
+		else if(voltage_x >5){
+			retval=32701;
+			//over voltage
+		}
+		else
+			retval=MODBUS_REGS(voltage_x,5.0,MB_Zero_offset[channel],MB_Span_offset[channel]);
 		break;
 
 	case V0_10 :
 		voltage_x = ((int)(voltage_x * 10))/10.0;
 		//voltage_x=roundf(voltage_x);
-		retval=MODBUS_REGS(voltage_x,10.0,MB_Zero_offset[channel],MB_Span_offset[channel]);
+		if(voltage_x<0){
+			retval=32700;
+			//under voltage
+		}
+		else if(voltage_x >10){
+			retval=32701;
+			//over voltage
+		}
+		else
+			retval=MODBUS_REGS(voltage_x,10.0,MB_Zero_offset[channel],MB_Span_offset[channel]);
 		break;
 
 	case MV0_100 :
 
 		temp=(int)(voltage_x);
-		retval=MODBUS_REGS(voltage_x,100.0,MB_Zero_offset[channel],MB_Span_offset[channel]);
+		if(temp<0){
+			retval=32700;
+			//under voltage
+		}
+		else if(temp >100){
+			retval=32701;
+			//over voltage
+		}
+		else
+			retval=MODBUS_REGS(temp,100.0,MB_Zero_offset[channel],MB_Span_offset[channel]);
 		break;
 	case MV0_250 :
 
-		temp=(int)(voltage_x);
-		retval=MODBUS_REGS(temp,250.0,MB_Zero_offset[channel],MB_Span_offset[channel]);
+		if(voltage_x<150.0)
+			temp=(int)(voltage_x);
+		else{
+			voltage_x=(voltage_x+0.2f);
+			temp=round(voltage_x);
+		}
+		if(temp>250){
+			retval=32701;
+			//over voltage
+		}
+		else if(temp<0){
+			retval=32700;
+			//under voltage
+		}
+		else
+			retval=MODBUS_REGS(temp,250.0,MB_Zero_offset[channel],MB_Span_offset[channel]);
 		break;
 
 	case MV0_50 :
-
 		temp=(int)(voltage_x);
-		retval=MODBUS_REGS(voltage_x,50.0,MB_Zero_offset[channel],MB_Span_offset[channel]);
+		if(temp>50){
+			retval=32701;
+			//over voltage
+		}
+		else if(temp<0){
+			retval=32700;
+			//under voltage
+		}
+		else{
+			retval=MODBUS_REGS(temp,50.0,MB_Zero_offset[channel],MB_Span_offset[channel]);
+		}
 		break;
 
 	case MA0_20 :
-		retval=MODBUS_REGS(voltage_x,20.0,MB_Zero_offset[channel],MB_Span_offset[channel]);
+		if(voltage_x<0){
+			retval=32700;
+			//under voltage
+		}
+		else if(voltage_x >20){
+			retval=32701;
+			//over voltage
+		}
+		else{
+			retval=MODBUS_REGS(voltage_x,20.0,MB_Zero_offset[channel],MB_Span_offset[channel]);
+		}
 		break;
 
 	case MA4_20 :
-
-		retval=MODBUS_REGS((voltage_x-4),(20.0-4.0),MB_Zero_offset[channel],MB_Span_offset[channel]);
-
-//		I=(I-Imin)*((Regmax-Regmin)/Imax-Imin)+Regmin
+		voltage_x=roundf(voltage_x);
+		if(voltage_x<4 && voltage_x>0.1f){
+			retval=32700;//under voltage
+		}
+		else if(voltage_x >20){
+			retval=32701;//over voltage
+		}
+		else if(voltage_x <=0.1f){
+			retval=32702;//open wire
+		}
+		else{
+			retval=MODBUS_REGS((voltage_x-4),(20.0-4.0),MB_Zero_offset[channel],MB_Span_offset[channel]);
+		}
 		break;
-	case V0_N10 :
-		retval=MODBUS_REGS(voltage_x,-10.0,MB_Zero_offset[channel],MB_Span_offset[channel]);
+	case VN5_5 :
+		voltage_x = ((int)(voltage_x * 10))/10.0;
+		//temp=(int)(voltage_x);
+		if(voltage_x<-5.0){
+			retval=32700;
+			//under voltage
+		}
+		else if(voltage_x >5.0){
+			retval=32701;
+			//over voltage
+		}
+		else
+			retval=MODBUS_REGS((voltage_x-(-5.0)),(5.0-(-5.0)),MB_Zero_offset[channel],MB_Span_offset[channel]);
+		//retval=MODBUS_REGS(voltage_x,-5.0,MB_Zero_offset[channel],MB_Span_offset[channel]);
 		break;
-	case VN10_N50 :
-		retval=MODBUS_REGS((voltage_x -(-10)),(50.0-(-10.0)),MB_Zero_offset[channel],MB_Span_offset[channel]);
+	case VN10_10 :
+		if(voltage_x<-10){
+			retval=32700;
+			//under voltage
+		}
+		else if(voltage_x >10){
+			retval=32701;
+			//over voltage
+		}
+		else
+			retval=MODBUS_REGS((voltage_x -(-10)),(0.0-(-10.0)),MB_Zero_offset[channel],MB_Span_offset[channel]);
 
 //		I=(I-Imin)*((Regmax-Regmin)/Imax-Imin)+Regmin
 		break;

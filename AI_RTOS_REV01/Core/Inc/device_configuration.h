@@ -17,8 +17,8 @@ typedef enum {
 	MV0_250,
 	MA0_20,
     MA4_20,
-	V0_N10,
-	VN10_N50
+	VN5_5,
+	VN10_10
 
 } eMode_t;
 

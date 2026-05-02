@@ -64,8 +64,8 @@ all: main-build
 main-build: AI_RTOS_REV01.elf secondary-outputs
 
 # Tool invocations
-AI_RTOS_REV01.elf AI_RTOS_REV01.map: $(OBJS) $(USER_OBJS) C:\Users\91981\STM32CubeIDE\workspace_1.19.0\AI_RTOS_REV01\STM32F103R8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "AI_RTOS_REV01.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\91981\STM32CubeIDE\workspace_1.19.0\AI_RTOS_REV01\STM32F103R8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="AI_RTOS_REV01.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+AI_RTOS_REV01.elf AI_RTOS_REV01.map: $(OBJS) $(USER_OBJS) G:\Deepak\stm32\AI_RTOS_REV01\STM32F103R8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "AI_RTOS_REV01.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"G:\Deepak\stm32\AI_RTOS_REV01\STM32F103R8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="AI_RTOS_REV01.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
